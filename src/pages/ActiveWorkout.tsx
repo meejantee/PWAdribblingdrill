@@ -267,11 +267,11 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
       {/* Info Modal */}
       {showInfoModal && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-950/80 backdrop-blur-sm p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-sm w-full shadow-2xl">
-            <h3 className="text-xl font-bold text-white mb-2">{currentDrill.name}</h3>
-            <p className="text-zinc-300 text-sm leading-relaxed mb-6">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-sm w-full shadow-2xl flex flex-col max-h-[90vh]">
+            <h3 className="text-xl font-bold text-white mb-2 shrink-0">{currentDrill.name}</h3>
+            <div className="overflow-y-auto pr-2 mb-6 text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">
               {(currentDrill as any).description || "No description provided for this drill."}
-            </p>
+            </div>
             <Button
               className="w-full"
               variant="primary"
