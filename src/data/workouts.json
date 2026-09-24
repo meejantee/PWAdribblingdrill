@@ -24,16 +24,16 @@
       "name": "Phase 1: Mechanics & Force",
       "totalDurationSeconds": 1200,
       "drills": [
-        { "id": "1_1", "name": "Fingertip Ball Taps", "durationSeconds": 60, "focusMode": "FULL_FOCUS" },
-        { "id": "1_2", "name": "Around-the-Body Wraps", "durationSeconds": 60, "focusMode": "FULL_FOCUS" },
-        { "id": "1_3", "name": "Left-Hand Ankle Pounding", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
-        { "id": "1_4", "name": "Left-Hand Side Pocket Pounds", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
-        { "id": "1_5", "name": "High-to-Low Accordion (Right)", "durationSeconds": 90, "focusMode": "FULL_FOCUS" },
-        { "id": "1_6", "name": "High-to-Low Accordion (Left)", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
-        { "id": "1_7", "name": "Tight V-Dribble (Front)", "durationSeconds": 150, "focusMode": "FULL_FOCUS" },
-        { "id": "1_8", "name": "2-Pound + Crossover", "durationSeconds": 180, "focusMode": "FULL_FOCUS" },
-        { "id": "1_9", "name": "Crossover with Shift", "durationSeconds": 180, "focusMode": "FULL_FOCUS" },
-        { "id": "1_10", "name": "Off-Hand Wall-Tap Isolation", "durationSeconds": 120, "focusMode": "FULL_FOCUS" }
+        { "id": "1_1", "name": "Fingertip Ball Taps", "durationSeconds": 60, "focusMode": "FULL_FOCUS", "cues": ["Arms extended fully", "Snap rapid taps between fingertips"] },
+        { "id": "1_2", "name": "Around-the-Body Wraps", "durationSeconds": 60, "focusMode": "FULL_FOCUS", "cues": ["Waist, knees, and head loops", "Keep feet planted firmly"] },
+        { "id": "1_3", "name": "Left-Hand Ankle Pounding", "durationSeconds": 120, "focusMode": "FULL_FOCUS", "cues": ["Athletic hip hinge, no rounded spine", "Pound foam with wrist snap"] },
+        { "id": "1_4", "name": "Left-Hand Side Pocket Pounds", "durationSeconds": 120, "focusMode": "FULL_FOCUS", "cues": ["Dribble beside left heel", "Pull back, push forward, no carry"] },
+        { "id": "1_5", "name": "High-to-Low Accordion (Right)", "durationSeconds": 90, "focusMode": "FULL_FOCUS", "cues": ["3 shoulder-height pounds", "3 micro-pounds at ankle level"] },
+        { "id": "1_6", "name": "High-to-Low Accordion (Left)", "durationSeconds": 120, "focusMode": "FULL_FOCUS", "cues": ["Push the floor down", "Cup outside hemisphere of ball"] },
+        { "id": "1_7", "name": "Tight V-Dribble (Front)", "durationSeconds": 150, "focusMode": "FULL_FOCUS", "cues": ["Push-pull crossover below knee", "Keep bounce inside shoulder width"] },
+        { "id": "1_8", "name": "2-Pound + Crossover", "durationSeconds": 180, "focusMode": "FULL_FOCUS", "cues": ["2 hard pounds, snap cross", "Receive with soft wrist catch"] },
+        { "id": "1_9", "name": "Crossover with Shift", "durationSeconds": 180, "focusMode": "FULL_FOCUS", "cues": ["Subtle weight transfer between insteps", "Don't rush the weak hand"] },
+        { "id": "1_10", "name": "Off-Hand Wall-Tap Isolation", "durationSeconds": 120, "focusMode": "FULL_FOCUS", "cues": ["Tap wall with off-hand continuously", "Keep dribble low and steady"] }
       ]
     },
     {
@@ -41,14 +41,14 @@
       "name": "Phase 2: Flow & Distraction",
       "totalDurationSeconds": 1200,
       "drills": [
-        { "id": "2_1", "name": "Left-Hand Ankle Pounds", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
-        { "id": "2_2", "name": "Left-Hand Side Pocket", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
-        { "id": "2_3", "name": "Low Rapid V-Crossovers", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
-        { "id": "2_4", "name": "1-Pound Rapid Cross", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
-        { "id": "2_5", "name": "Continuous Rhythmic Crossovers", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED" },
-        { "id": "2_6", "name": "Accordion Dribbles (Alternating)", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED" },
-        { "id": "2_7", "name": "Figure-8 Dribbles", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED" },
-        { "id": "2_8", "name": "Free Flow / Freestyle", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED" }
+        { "id": "2_1", "name": "Left-Hand Ankle Pounds", "durationSeconds": 120, "focusMode": "FULL_FOCUS", "cues": ["Establish rhythm", "Hinge hips, protect L5-S1"] },
+        { "id": "2_2", "name": "Left-Hand Side Pocket", "durationSeconds": 120, "focusMode": "FULL_FOCUS", "cues": ["Activate lats and triceps", "Feel the ball padding"] },
+        { "id": "2_3", "name": "Low Rapid V-Crossovers", "durationSeconds": 120, "focusMode": "FULL_FOCUS", "cues": ["Push-roll across shin line", "Strictly below knees"] },
+        { "id": "2_4", "name": "1-Pound Rapid Cross", "durationSeconds": 120, "focusMode": "FULL_FOCUS", "cues": ["Equalize force between hands", "Prepare for distraction mode"] },
+        { "id": "2_5", "name": "Continuous Rhythmic Crossovers", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED", "cues": ["Eyes up, watch screen", "Rely on proprioception"] },
+        { "id": "2_6", "name": "Accordion Dribbles (Alternating)", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED", "cues": ["Change height smoothly", "Keep eyes on screen"] },
+        { "id": "2_7", "name": "Figure-8 Dribbles", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED", "cues": ["Thread through legs", "Maintain hip hinge posture"] },
+        { "id": "2_8", "name": "Free Flow / Freestyle", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED", "cues": ["Chain moves below knee", "Reset posture if spine rounds"] }
       ]
     }
   ]
