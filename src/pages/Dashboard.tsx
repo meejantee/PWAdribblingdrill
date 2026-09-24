@@ -26,7 +26,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-6 flex flex-col max-w-md mx-auto">
+    <div className="min-h-screen bg-transparent text-zinc-100 p-6 flex flex-col max-w-md mx-auto">
       {/* Header */}
       <header className="mb-8 mt-4">
         <h1 className="text-3xl font-extrabold tracking-tight mb-2">Foam Ball Trainer</h1>

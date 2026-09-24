@@ -131,9 +131,9 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
   const progressPercent = (totalElapsed / totalDuration) * 100;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col max-w-md mx-auto">
+    <div className="min-h-screen bg-transparent text-zinc-100 flex flex-col max-w-md mx-auto">
       {/* Top Bar */}
-      <div className="p-4 flex items-center justify-between border-b border-zinc-900 bg-zinc-950/80 sticky top-0 backdrop-blur-md z-10">
+      <div className="p-4 flex items-center justify-between border-b border-zinc-900 bg-zinc-800/80 sticky top-0 backdrop-blur-md z-10">
         <div className="text-sm font-semibold text-zinc-400 truncate pr-4">{phase.name}</div>
         <div className="flex items-center gap-2">
           {mode === 'standing' ? (
