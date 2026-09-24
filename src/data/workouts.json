@@ -1,0 +1,55 @@
+{
+  "scheduleContext": {
+    "Monday": "Standard Training Day",
+    "Tuesday": "Rock Climbing Day",
+    "Wednesday": "Basketball Court Run Day",
+    "Thursday": "Finger Hangboard Day",
+    "Friday": "Active Recovery Day",
+    "Saturday": "Rock Climbing Day",
+    "Sunday": "Rest & Reset Day"
+  },
+  "postureCues": {
+    "standing": {
+      "general": "Hinge at hips, soft knees, chest at 45 degrees, neutral spine.",
+      "ballContact": "Pound the ball down; do not slap with loose fingers."
+    },
+    "seated": {
+      "general": "Sit on the front edge of a chair, tall neutral spine, zero back load.",
+      "ballContact": "Pure wrist and forearm snap; isolate arm mechanics."
+    }
+  },
+  "phases": [
+    {
+      "id": "phase_1",
+      "name": "Phase 1: Mechanics & Force",
+      "totalDurationSeconds": 1200,
+      "drills": [
+        { "id": "1_1", "name": "Fingertip Ball Taps", "durationSeconds": 60, "focusMode": "FULL_FOCUS" },
+        { "id": "1_2", "name": "Around-the-Body Wraps", "durationSeconds": 60, "focusMode": "FULL_FOCUS" },
+        { "id": "1_3", "name": "Left-Hand Ankle Pounding", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
+        { "id": "1_4", "name": "Left-Hand Side Pocket Pounds", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
+        { "id": "1_5", "name": "High-to-Low Accordion (Right)", "durationSeconds": 90, "focusMode": "FULL_FOCUS" },
+        { "id": "1_6", "name": "High-to-Low Accordion (Left)", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
+        { "id": "1_7", "name": "Tight V-Dribble (Front)", "durationSeconds": 150, "focusMode": "FULL_FOCUS" },
+        { "id": "1_8", "name": "2-Pound + Crossover", "durationSeconds": 180, "focusMode": "FULL_FOCUS" },
+        { "id": "1_9", "name": "Crossover with Shift", "durationSeconds": 180, "focusMode": "FULL_FOCUS" },
+        { "id": "1_10", "name": "Off-Hand Wall-Tap Isolation", "durationSeconds": 120, "focusMode": "FULL_FOCUS" }
+      ]
+    },
+    {
+      "id": "phase_2",
+      "name": "Phase 2: Flow & Distraction",
+      "totalDurationSeconds": 1200,
+      "drills": [
+        { "id": "2_1", "name": "Left-Hand Ankle Pounds", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
+        { "id": "2_2", "name": "Left-Hand Side Pocket", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
+        { "id": "2_3", "name": "Low Rapid V-Crossovers", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
+        { "id": "2_4", "name": "1-Pound Rapid Cross", "durationSeconds": 120, "focusMode": "FULL_FOCUS" },
+        { "id": "2_5", "name": "Continuous Rhythmic Crossovers", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED" },
+        { "id": "2_6", "name": "Accordion Dribbles (Alternating)", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED" },
+        { "id": "2_7", "name": "Figure-8 Dribbles", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED" },
+        { "id": "2_8", "name": "Free Flow / Freestyle", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED" }
+      ]
+    }
+  ]
+}
