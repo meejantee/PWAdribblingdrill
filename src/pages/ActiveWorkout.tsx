@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import workoutsData from '../data/workouts.json';
 import { playCountdown, playTransition, unlockAudio } from '../utils/audio';
-import { Play, Pause, SkipForward, SkipBack, X, CheckCircle, Info } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, X, Info } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
 interface ActiveWorkoutProps {
@@ -29,8 +29,6 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
 
   const currentDrill = phase.drills[currentDrillIndex];
   const nextDrill = phase.drills[currentDrillIndex + 1];
-
-  const postureCues = workoutsData.postureCues[mode];
 
   // Wake lock management
   useEffect(() => {
@@ -228,21 +226,19 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
             <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500">Prev</span>
           </div>
 
-          <Button 
-            variant="primary" 
-            size="lg"
-            className="w-20 h-20 rounded-full text-zinc-950 shadow-[0_0_40px_rgba(255,255,255,0.1)] mb-4"
+          <button
+            className="w-20 h-20 rounded-full bg-zinc-100 text-zinc-900 shadow-[0_0_40px_rgba(255,255,255,0.1)] mb-4 flex items-center justify-center hover:bg-white transition-colors"
             onClick={() => {
               unlockAudio();
               setIsPlaying(!isPlaying);
             }}
           >
             {isPlaying ? (
-              <Pause className="w-8 h-8" fill="currentColor" />
+              <Pause className="w-8 h-8 text-zinc-900 fill-zinc-900" />
             ) : (
-              <Play className="w-8 h-8 ml-1" fill="currentColor" />
+              <Play className="w-8 h-8 ml-1 text-zinc-900 fill-zinc-900" />
             )}
-          </Button>
+          </button>
 
           <div className="flex flex-col items-center gap-1">
             <button
