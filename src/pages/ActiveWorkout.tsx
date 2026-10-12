@@ -187,34 +187,25 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
         </div>
 
         {/* Timer */}
-        <div className="flex flex-col items-center justify-center flex-1 min-h-[150px] mb-4">
-          <div className="text-[5rem] sm:text-[6rem] font-black tracking-tighter leading-none tabular-nums text-white">
+        <div className="flex flex-col items-center justify-center flex-1 min-h-[200px] mb-4">
+          <div className="text-[5rem] sm:text-[7rem] font-black tracking-tighter leading-none tabular-nums text-white">
             {formatTime(timeLeft)}
           </div>
-          <div className="text-lg sm:text-xl text-zinc-400 mt-2 font-medium text-center flex items-center justify-center gap-2">
+          <div className="text-xl sm:text-2xl text-zinc-300 mt-4 font-medium text-center">
             {currentDrill.name}
-            <button
-              onClick={() => setShowInfoModal(true)}
-              className="text-zinc-500 hover:text-zinc-300 transition-colors"
-            >
-              <Info className="w-5 h-5" />
-            </button>
           </div>
         </div>
 
-        {/* Cues */}
-        <div className="bg-zinc-900 rounded-2xl p-4 mb-4 border border-zinc-800 shadow-xl shrink-0">
-          <h3 className="text-[10px] sm:text-xs uppercase tracking-widest text-zinc-500 font-bold mb-2">Posture & Cues</h3>
-          <ul className="space-y-2 text-xs sm:text-sm text-zinc-300">
-            <li className="flex gap-2">
-              <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
-              <span>{postureCues.general}</span>
-            </li>
-            <li className="flex gap-2">
-              <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
-              <span>{postureCues.ballContact}</span>
-            </li>
-          </ul>
+        {/* Info Button */}
+        <div className="flex justify-center mb-8 shrink-0">
+          <Button
+            variant="secondary"
+            className="flex items-center gap-2 bg-zinc-900 border-zinc-800 hover:bg-zinc-800 text-zinc-300"
+            onClick={() => setShowInfoModal(true)}
+          >
+            <Info className="w-5 h-5" />
+            <span>How to do this drill</span>
+          </Button>
         </div>
 
         {/* Next Drill */}
@@ -225,21 +216,22 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
 
       {/* Controls - Fixed at Bottom */}
       <div className="p-4 pb-6 bg-gradient-to-t from-zinc-950 via-zinc-950 to-transparent shrink-0">
-        <div className="flex items-center justify-center gap-4">
-          <Button 
-            variant="ghost" 
-            size="lg"
-            className="w-16 h-16 rounded-full border border-zinc-800 text-zinc-400 disabled:opacity-30 disabled:border-zinc-800/50"
-            onClick={skipBackward}
-            disabled={currentDrillIndex === 0}
-          >
-            <SkipBack className="w-6 h-6" fill="currentColor" />
-          </Button>
+        <div className="flex items-center justify-center gap-6">
+          <div className="flex flex-col items-center gap-1">
+            <button
+              className="w-14 h-14 rounded-full bg-zinc-800/80 border border-zinc-700 text-zinc-200 hover:bg-zinc-700 disabled:opacity-30 disabled:bg-zinc-900 flex items-center justify-center transition-colors"
+              onClick={skipBackward}
+              disabled={currentDrillIndex === 0}
+            >
+              <SkipBack className="w-6 h-6" />
+            </button>
+            <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500">Prev</span>
+          </div>
 
           <Button 
             variant="primary" 
             size="lg"
-            className="w-20 h-20 rounded-full text-zinc-950 shadow-[0_0_40px_rgba(255,255,255,0.1)]"
+            className="w-20 h-20 rounded-full text-zinc-950 shadow-[0_0_40px_rgba(255,255,255,0.1)] mb-4"
             onClick={() => {
               unlockAudio();
               setIsPlaying(!isPlaying);
@@ -252,15 +244,16 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
             )}
           </Button>
 
-          <Button 
-            variant="ghost" 
-            size="lg"
-            className="w-16 h-16 rounded-full border border-zinc-800 text-zinc-400 disabled:opacity-30 disabled:border-zinc-800/50"
-            onClick={skipDrill}
-            disabled={currentDrillIndex >= phase.drills.length - 1}
-          >
-            <SkipForward className="w-6 h-6" fill="currentColor" />
-          </Button>
+          <div className="flex flex-col items-center gap-1">
+            <button
+              className="w-14 h-14 rounded-full bg-zinc-800/80 border border-zinc-700 text-zinc-200 hover:bg-zinc-700 disabled:opacity-30 disabled:bg-zinc-900 flex items-center justify-center transition-colors"
+              onClick={skipDrill}
+              disabled={currentDrillIndex >= phase.drills.length - 1}
+            >
+              <SkipForward className="w-6 h-6" />
+            </button>
+            <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500">Next</span>
+          </div>
         </div>
       </div>
 

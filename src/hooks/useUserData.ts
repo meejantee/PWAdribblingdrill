@@ -12,13 +12,21 @@ export function useUserData() {
       
       let newStreak = prev.currentStreak;
       if (lastDate) {
-        const diffTime = Math.abs(now.getTime() - lastDate.getTime());
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        if (diffDays === 1) {
-          newStreak += 1;
-        } else if (diffDays > 1) {
-          newStreak = 1;
+        const todayStr = now.toDateString();
+        const lastDateStr = lastDate.toDateString();
+
+        if (todayStr !== lastDateStr) {
+          // It's a new day, let's see if it's consecutive
+          const yesterday = new Date(now);
+          yesterday.setDate(yesterday.getDate() - 1);
+
+          if (lastDateStr === yesterday.toDateString()) {
+            newStreak += 1;
+          } else {
+            newStreak = 1;
+          }
         }
+        // If it's the same day (todayStr === lastDateStr), streak stays the same
       } else {
         newStreak = 1;
       }
