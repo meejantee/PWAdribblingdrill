@@ -16,6 +16,7 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
   const [currentDrillIndex, setCurrentDrillIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
+  const [currentMode, setCurrentMode] = useState<'standing' | 'seated'>(mode);
   
   // Time remaining in current drill (seconds)
   const [timeLeft, setTimeLeft] = useState(phase.drills[0].durationSeconds);
@@ -150,7 +151,7 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
           <div className="text-xs text-zinc-500">Drill {currentDrillIndex + 1} of {phase.drills.length}</div>
         </div>
         <div className="flex items-center gap-3">
-          {mode === 'standing' ? (
+          {currentMode === 'standing' ? (
             <span className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-emerald-500/20 text-emerald-400 hidden sm:inline-block">
               Standing
             </span>
@@ -257,12 +258,51 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
       {showInfoModal && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-950/80 backdrop-blur-sm p-4">
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-sm w-full shadow-2xl flex flex-col max-h-[90vh]">
-            <h3 className="text-xl font-bold text-white mb-2 shrink-0">{currentDrill.name}</h3>
-            <div className="overflow-y-auto pr-2 mb-6 text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">
-              {(currentDrill as any).description || "No description provided for this drill."}
+
+            {/* Top Posture Banner */}
+            <div className={`p-4 rounded-lg mb-4 shrink-0 ${currentMode === 'standing' ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-blue-500/10 border border-blue-500/20'}`}>
+              <div className="flex justify-between items-start mb-2">
+                <h4 className={`text-sm font-bold uppercase tracking-wider ${currentMode === 'standing' ? 'text-emerald-400' : 'text-blue-400'}`}>
+                  {(workoutsData.postureCues as any)[currentMode].title}
+                </h4>
+                <button
+                  onClick={() => setCurrentMode(currentMode === 'standing' ? 'seated' : 'standing')}
+                  className="text-xs underline text-zinc-400 hover:text-white"
+                >
+                  Switch to {currentMode === 'standing' ? 'Seated' : 'Standing'}
+                </button>
+              </div>
+              <p className="text-xs text-zinc-300 mb-1"><strong>Posture:</strong> {(workoutsData.postureCues as any)[currentMode].general}</p>
+              <p className="text-xs text-zinc-300"><strong>Action:</strong> {(workoutsData.postureCues as any)[currentMode].ballContact}</p>
             </div>
+
+            <div className="flex items-center gap-2 mb-3 shrink-0 flex-wrap">
+              <h3 className="text-xl font-bold text-white">{currentDrill.name}</h3>
+
+              {/* Hand Assignment Badge */}
+              <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide whitespace-nowrap ${
+                (currentDrill as any).handAssignment === 'LEFT_ONLY' ? 'bg-purple-500/20 text-purple-400' :
+                (currentDrill as any).handAssignment === 'RIGHT_ONLY' ? 'bg-emerald-500/20 text-emerald-400' :
+                (currentDrill as any).handAssignment === 'SPLIT_HALFWAY' ? 'bg-amber-500/20 text-amber-400' :
+                'bg-slate-500/20 text-slate-400'
+              }`}>
+                {(currentDrill as any).handAssignment === 'LEFT_ONLY' ? 'Left Hand Only' :
+                 (currentDrill as any).handAssignment === 'RIGHT_ONLY' ? 'Right Hand Only' :
+                 (currentDrill as any).handAssignment === 'SPLIT_HALFWAY' ? 'Switch Hand at 50%' :
+                 'Both Hands'}
+              </span>
+            </div>
+
+            <div className="overflow-y-auto pr-2 mb-6 text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">
+              {currentMode === 'seated' && (currentDrill as any).seatedDescription
+                ? (currentDrill as any).seatedDescription
+                : (currentMode === 'standing' && (currentDrill as any).standingDescription
+                    ? (currentDrill as any).standingDescription
+                    : (currentDrill as any).description || "No description provided for this drill.")}
+            </div>
+
             <Button
-              className="w-full"
+              className="w-full shrink-0"
               variant="primary"
               onClick={() => setShowInfoModal(false)}
             >
