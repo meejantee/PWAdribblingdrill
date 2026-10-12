@@ -245,7 +245,6 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
             <button
               className="w-14 h-14 rounded-full bg-zinc-800/80 border border-zinc-700 text-zinc-200 hover:bg-zinc-700 disabled:opacity-30 disabled:bg-zinc-900 flex items-center justify-center transition-colors"
               onClick={skipDrill}
-              disabled={currentDrillIndex >= phase.drills.length - 1}
             >
               <SkipForward className="w-6 h-6" />
             </button>
