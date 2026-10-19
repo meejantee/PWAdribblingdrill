@@ -3,7 +3,9 @@ export interface UserData {
   unlockedPhases: string[];      // e.g. ["phase_1"] initially
   completedSessions: number;     // Total workouts finished
   currentStreak: number;         // Current daily streak
+  highestStreak: number;         // Max daily streak achieved
   lastWorkoutDate: string | null;// ISO string
+  previousStateSnapshot: Omit<UserData, 'previousStateSnapshot'> | null; // For undo
 }
 
 export const INITIAL_USER_DATA: UserData = {
@@ -11,5 +13,7 @@ export const INITIAL_USER_DATA: UserData = {
   unlockedPhases: ['phase_1'],
   completedSessions: 0,
   currentStreak: 0,
-  lastWorkoutDate: null
+  highestStreak: 0,
+  lastWorkoutDate: null,
+  previousStateSnapshot: null
 };

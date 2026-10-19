@@ -2,16 +2,17 @@ import React, { useState, useMemo } from 'react';
 import { useUserData } from '../hooks/useUserData';
 import workoutsData from '../data/workouts.json';
 import { ReadinessModal } from '../components/ReadinessModal';
-import { Lock, Unlock, Zap, Activity } from 'lucide-react';
+import { Lock, Unlock, Zap, Activity, Trophy, RotateCcw } from 'lucide-react';
 
 interface DashboardProps {
   onStartWorkout: (phaseId: string, mode: 'standing' | 'seated') => void;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
-  const { userData } = useUserData();
+  const { userData, getDisplayedStreak, undoTodaysSession } = useUserData();
   const [selectedPhase, setSelectedPhase] = useState<string>('phase_1');
   const [showReadinessModal, setShowReadinessModal] = useState(false);
+  const displayedStreak = getDisplayedStreak();
 
   const currentDay = useMemo(() => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -28,17 +29,38 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
   return (
     <div className="min-h-screen bg-transparent text-zinc-100 p-6 flex flex-col max-w-md mx-auto">
       {/* Header */}
-      <header className="mb-8 mt-4">
-        <h1 className="text-3xl font-extrabold tracking-tight mb-2">Foam Ball Trainer</h1>
-        <div className="flex gap-4 text-sm text-zinc-400">
+      <header className="mb-6 mt-4">
+        <h1 className="text-3xl font-extrabold tracking-tight mb-3">Foam Ball Trainer</h1>
+        <div className="flex flex-wrap gap-4 text-sm text-zinc-400">
           <div className="flex items-center gap-1">
-            <Zap className="w-4 h-4 text-yellow-500" /> {userData.currentStreak} day streak
+            <Zap className="w-4 h-4 text-yellow-500" /> {displayedStreak} day streak
+          </div>
+          <div className="flex items-center gap-1">
+            <Trophy className="w-4 h-4 text-amber-500" /> {userData.highestStreak} best
           </div>
           <div className="flex items-center gap-1">
             <Activity className="w-4 h-4 text-blue-400" /> {userData.completedSessions} sessions
           </div>
         </div>
       </header>
+
+      {/* Today's completion banner */}
+      {userData.lastWorkoutDate && new Date(userData.lastWorkoutDate).toDateString() === new Date().toDateString() && (
+        <div className="mb-6 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <h3 className="text-emerald-400 font-bold text-sm mb-1">Session complete!</h3>
+            <p className="text-emerald-500/70 text-xs">Great job training today.</p>
+          </div>
+          {userData.previousStateSnapshot && (
+            <button
+              onClick={undoTodaysSession}
+              className="flex items-center gap-1 text-xs bg-zinc-900/50 hover:bg-zinc-800 text-zinc-400 px-3 py-2 rounded-lg transition-colors border border-zinc-800"
+            >
+              <RotateCcw className="w-3 h-3" /> Undo
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Progress to next phase if in Phase 1 */}
       {!userData.unlockedPhases.includes('phase_2') && (
