@@ -14,6 +14,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
   const [showReadinessModal, setShowReadinessModal] = useState(false);
   const displayedStreak = getDisplayedStreak();
 
+  const isCompletedToday = Boolean(userData.lastWorkoutDate && new Date(userData.lastWorkoutDate).toDateString() === new Date().toDateString());
+
   const currentDay = useMemo(() => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     return days[new Date().getDay()];
@@ -22,6 +24,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
   const dayContextTag = (workoutsData.scheduleContext as any)[currentDay] || 'Standard Training Day';
 
   const handleStartClick = (phaseId: string) => {
+    if (isCompletedToday) return; // Prevent start if already completed
     setSelectedPhase(phaseId);
     setShowReadinessModal(true);
   };
@@ -45,7 +48,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
       </header>
 
       {/* Today's completion banner */}
-      {userData.lastWorkoutDate && new Date(userData.lastWorkoutDate).toDateString() === new Date().toDateString() && (
+      {isCompletedToday && (
         <div className="mb-6 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 flex items-center justify-between">
           <div>
             <h3 className="text-emerald-400 font-bold text-sm mb-1">Session complete!</h3>
@@ -88,7 +91,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
             <div 
               key={phase.id} 
               className={`p-5 rounded-xl border transition-all ${
-                isUnlocked 
+                isUnlocked && !isCompletedToday
                   ? 'bg-zinc-900 border-zinc-700 hover:border-zinc-500' 
                   : 'bg-zinc-900/50 border-zinc-800 opacity-60'
               }`}
@@ -106,15 +109,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
               </p>
               
               <button
-                disabled={!isUnlocked}
+                disabled={!isUnlocked || isCompletedToday}
                 onClick={() => handleStartClick(phase.id)}
                 className={`w-full py-3 rounded-lg font-semibold text-sm transition-colors ${
-                  isUnlocked 
+                  isUnlocked && !isCompletedToday
                     ? 'bg-zinc-100 text-zinc-900 hover:bg-zinc-300' 
                     : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
                 }`}
               >
-                {isUnlocked ? 'Select Phase' : 'Locked'}
+                {isCompletedToday ? 'Finished Today' : isUnlocked ? 'Select Phase' : 'Locked'}
               </button>
             </div>
           );

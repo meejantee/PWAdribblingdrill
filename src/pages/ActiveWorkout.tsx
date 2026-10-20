@@ -293,11 +293,17 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
             </div>
 
             <div className="overflow-y-auto pr-2 mb-6 text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">
-              {currentMode === 'seated' && (currentDrill as any).seatedDescription
-                ? (currentDrill as any).seatedDescription
-                : (currentMode === 'standing' && (currentDrill as any).standingDescription
-                    ? (currentDrill as any).standingDescription
-                    : (currentDrill as any).description || "No description provided for this drill.")}
+              <ul className="list-disc list-outside ml-4 mb-4 space-y-1">
+                {((currentDrill as any).cues || []).map((cue: string, idx: number) => (
+                  <li key={idx}>{cue}</li>
+                ))}
+              </ul>
+              {currentMode === 'seated' && (currentDrill as any).seatedAdaptation && (
+                <div className="bg-blue-500/10 border border-blue-500/20 p-3 rounded-lg text-blue-300/90 text-xs">
+                  <strong>Seated Adaptation:</strong><br />
+                  {(currentDrill as any).seatedAdaptation}
+                </div>
+              )}
             </div>
 
             <Button

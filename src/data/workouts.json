@@ -12,12 +12,12 @@
     "standing": {
       "title": "Standing Athletic Stance",
       "general": "Hinge at hips, soft knees, chest at 45 degrees, neutral spine.",
-      "ballContact": "Pound the ball down into the floor; do not slap with loose fingers."
+      "ballContact": "Pound the ball down; do not slap with loose fingers."
     },
     "seated": {
       "title": "Seated Lumbar-Deload",
-      "general": "Sit on front edge of a firm chair/bench, tall neutral spine, zero lumbar load.",
-      "ballContact": "Pure wrist and forearm snap; isolate arm mechanics with zero leg assist."
+      "general": "Sit on the front edge of a firm chair, tall neutral spine, zero back load.",
+      "ballContact": "Pure wrist and forearm snap; isolate arm mechanics without leaning forward."
     }
   },
   "phases": [
@@ -31,7 +31,11 @@
           "name": "Fingertip Ball Taps",
           "durationSeconds": 60,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Extend your arms straight out in front of your chest. Rapidly bounce/tap the ball back and forth between the fingertips of both hands without letting it touch your palms. Move arms slowly from eye level down to waist level and back up.\n\u2022 Constraints & Guardrails:\n  - Eyes: Look straight ahead over the ball; do not look down at your hands.\n  - Form: Keep elbows soft, not hyperextended.\n\u2022 Mistake to avoid: Don't catch or slap the ball with your palm pads; this is pure fingertip reflex.",
+          "cues": [
+            "Arms extended fully",
+            "Snap rapid taps between fingertips"
+          ],
+          "seatedAdaptation": "Perform at chest height with tall spine; zero lower back tension.",
           "handAssignment": "BOTH_HANDS_CONTINUOUS"
         },
         {
@@ -39,87 +43,131 @@
           "name": "Around-the-Body Wraps",
           "durationSeconds": 60,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Plant feet shoulder-width apart. Pass the ball hand-to-hand in continuous circles around your waist, then drop into a flat-back hip hinge for knee circles, and stand tall for head circles. Reverse direction halfway through.\n\u2022 Constraints & Guardrails:\n  - Eyes: Keep eyes fixed at eye level on a wall point or screen.\n  - Movement: Keep your torso and hips quiet; do not swing your torso or sway side-to-side.\n\u2022 Mistake to avoid: Do not rest the ball against your body or clothes as you pass it behind your back.",
-          "handAssignment": "BOTH_HANDS_CONTINUOUS",
-          "standingDescription": "\u2022 How to do it: Plant feet shoulder-width apart. Pass the ball hand-to-hand in continuous circles around your waist, then drop into a flat-back hip hinge for knee circles, and stand tall for head circles. Reverse direction halfway through.\n\u2022 Constraints & Guardrails:\n  - Eyes: Keep eyes fixed at eye level on a wall point or screen.\n  - Movement: Keep your torso and hips quiet; do not swing your torso or sway side-to-side.\n\u2022 Mistake to avoid: Do not rest the ball against your body or clothes as you pass it behind your back.",
-          "seatedDescription": "\u2022 How to do it: Plant feet shoulder-width apart. Pass the ball hand-to-hand in continuous circles around your waist, then drop into a flat-back hip hinge for knee circles, and stand tall for head circles. Reverse direction halfway through.\n\u2022 Constraints & Guardrails:\n  - Eyes: Keep eyes fixed at eye level on a wall point or screen.\n  - Movement: Keep your torso and hips quiet; do not swing your torso or sway side-to-side.\n\u2022 Mistake to avoid: Do not rest the ball against your body or clothes as you pass it behind your back. (Seated Modification: Pass the ball tightly under or around your legs while maintaining a neutral spine.)"
+          "cues": [
+            "Waist, knees, and head loops",
+            "Keep feet planted firmly"
+          ],
+          "seatedAdaptation": "Wrap around head, chest, and behind chair backrest without slouching.",
+          "handAssignment": "BOTH_HANDS_CONTINUOUS"
         },
         {
-          "id": "1_3",
+          "id": "1_3a",
+          "name": "Right-Hand Ankle Pounding",
+          "durationSeconds": 60,
+          "focusMode": "FULL_FOCUS",
+          "cues": [
+            "Calibrate dominant hand force",
+            "Pound foam with sharp wrist snap"
+          ],
+          "seatedAdaptation": "Dribble outside right chair leg, forearm parallel to floor.",
+          "handAssignment": "RIGHT_ONLY"
+        },
+        {
+          "id": "1_3b",
           "name": "Left-Hand Ankle Pounding",
           "durationSeconds": 120,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Drop into an athletic hinge\u2014push hips backward, bend knees, keep collarbones up at 45 degrees. Pound the ball with your left hand at shoe/ankle level using rapid wrist and forearm snaps.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep bounce height strictly below 25 cm (shoe-collar height).\n  - Eyes: Fix your gaze straight ahead; look at the ball only for the first 5 seconds to calibrate bounce.\n\u2022 Mistake to avoid: Do not round your lower spine forward to reach the floor. Lower your hand by bending knees and flexing wrists, not bending at the waist.",
-          "handAssignment": "LEFT_ONLY",
-          "standingDescription": "\u2022 How to do it: Drop into an athletic hinge\u2014push hips backward, bend knees, keep collarbones up at 45 degrees. Pound the ball with your left hand at shoe/ankle level using rapid wrist and forearm snaps.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep bounce height strictly below 25 cm (shoe-collar height).\n  - Eyes: Fix your gaze straight ahead; look at the ball only for the first 5 seconds to calibrate bounce.\n\u2022 Mistake to avoid: Do not round your lower spine forward to reach the floor. Lower your hand by bending knees and flexing wrists, not bending at the waist.",
-          "seatedDescription": "\u2022 How to do it: Drop into an athletic hinge\u2014push hips backward, bend knees, keep collarbones up at 45 degrees. Pound the ball with your left hand at shoe/ankle level using rapid wrist and forearm snaps.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep bounce height strictly below 25 cm (shoe-collar height).\n  - Eyes: Fix your gaze straight ahead; look at the ball only for the first 5 seconds to calibrate bounce.\n\u2022 Mistake to avoid: Do not round your lower spine forward to reach the floor. Lower your hand by bending knees and flexing wrists, not bending at the waist. (Seated Modification: Keep your spine tall, isolate the wrist and arm.)"
+          "cues": [
+            "Athletic hip hinge, no rounded spine",
+            "Match right-hand bounce height"
+          ],
+          "seatedAdaptation": "Dribble outside left chair leg, isolate weak-side wrist snap.",
+          "handAssignment": "LEFT_ONLY"
         },
         {
-          "id": "1_4",
+          "id": "1_4a",
+          "name": "Right-Hand Side Pocket Pounds",
+          "durationSeconds": 60,
+          "focusMode": "FULL_FOCUS",
+          "cues": [
+            "Dribble beside right heel",
+            "Pull back, push forward, no carry"
+          ],
+          "seatedAdaptation": "Work ball strictly along chair flank; keep elbow tucked.",
+          "handAssignment": "RIGHT_ONLY"
+        },
+        {
+          "id": "1_4b",
           "name": "Left-Hand Side Pocket Pounds",
           "durationSeconds": 120,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Stay in the hip hinge. Dribble the ball along the outer edge of your left foot/heel. Push the ball forward toward the toes and pull it back behind the heel in a straight track.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep the travel path under 40 cm length; never let the ball drift across your body.\n  - Hand contact: Keep your hand on the top-rear quadrant to push forward, and top-front quadrant to pull back.\n\u2022 Mistake to avoid: Do not scoop or turn your palm upward under the ball at either turnaround point (carrying violation).",
-          "handAssignment": "LEFT_ONLY",
-          "standingDescription": "\u2022 How to do it: Stay in the hip hinge. Dribble the ball along the outer edge of your left foot/heel. Push the ball forward toward the toes and pull it back behind the heel in a straight track.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep the travel path under 40 cm length; never let the ball drift across your body.\n  - Hand contact: Keep your hand on the top-rear quadrant to push forward, and top-front quadrant to pull back.\n\u2022 Mistake to avoid: Do not scoop or turn your palm upward under the ball at either turnaround point (carrying violation).",
-          "seatedDescription": "\u2022 How to do it: Stay in the hip hinge. Dribble the ball along the outer edge of your left foot/heel. Push the ball forward toward the toes and pull it back behind the heel in a straight track.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep the travel path under 40 cm length; never let the ball drift across your body.\n  - Hand contact: Keep your hand on the top-rear quadrant to push forward, and top-front quadrant to pull back.\n\u2022 Mistake to avoid: Do not scoop or turn your palm upward under the ball at either turnaround point (carrying violation). (Seated Modification: Keep your spine tall, isolate the wrist and arm.)"
+          "cues": [
+            "Dribble beside left heel",
+            "Pull back, push forward, no carry"
+          ],
+          "seatedAdaptation": "Work ball along left chair flank; activate left lat and forearm.",
+          "handAssignment": "LEFT_ONLY"
         },
         {
           "id": "1_5",
           "name": "High-to-Low Accordion (Right)",
           "durationSeconds": 90,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Stand with knees soft. Pound 3 times hard at shoulder/armpit height, then drop your hips into a deep hinge and deliver 3 micro-pounds at ankle level. Alternate continuously.\n\u2022 Constraints & Guardrails:\n  - Boundaries: High dribble stays capped at shoulder level; low dribble stays below knee level.\n  - Eyes: Maintain horizontal eye level throughout the entire height transition.\n\u2022 Mistake to avoid: Do not let the ball float or wait for it to bounce back; smash the foam ball down into the floor on high pounds.",
-          "handAssignment": "RIGHT_ONLY",
-          "standingDescription": "\u2022 How to do it: Stand with knees soft. Pound 3 times hard at shoulder/armpit height, then drop your hips into a deep hinge and deliver 3 micro-pounds at ankle level. Alternate continuously.\n\u2022 Constraints & Guardrails:\n  - Boundaries: High dribble stays capped at shoulder level; low dribble stays below knee level.\n  - Eyes: Maintain horizontal eye level throughout the entire height transition.\n\u2022 Mistake to avoid: Do not let the ball float or wait for it to bounce back; smash the foam ball down into the floor on high pounds.",
-          "seatedDescription": "\u2022 How to do it: Stand with knees soft. Pound 3 times hard at shoulder/armpit height, then drop your hips into a deep hinge and deliver 3 micro-pounds at ankle level. Alternate continuously.\n\u2022 Constraints & Guardrails:\n  - Boundaries: High dribble stays capped at shoulder level; low dribble stays below knee level.\n  - Eyes: Maintain horizontal eye level throughout the entire height transition.\n\u2022 Mistake to avoid: Do not let the ball float or wait for it to bounce back; smash the foam ball down into the floor on high pounds. (Seated Modification: Keep your spine tall, isolate the wrist and arm.)"
+          "cues": [
+            "3 chest-height pounds",
+            "3 micro-pounds at ankle level"
+          ],
+          "seatedAdaptation": "Drop low bounce beside right caster/foot, rise only to chest height.",
+          "handAssignment": "RIGHT_ONLY"
         },
         {
           "id": "1_6",
           "name": "High-to-Low Accordion (Left)",
           "durationSeconds": 120,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Repeat the high-to-low cycle using only your off-hand. Focus on driving downward force through the left palm pad and triceps on the high dribbles.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Ball must rebound in a tight vertical cylinder directly outside your left hip.\n  - Eyes: Keep your chin up and eyes on the horizon.\n\u2022 Mistake to avoid: Do not let the weak hand drift inward toward your centerline on the high bounce.",
-          "handAssignment": "LEFT_ONLY",
-          "standingDescription": "\u2022 How to do it: Repeat the high-to-low cycle using only your off-hand. Focus on driving downward force through the left palm pad and triceps on the high dribbles.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Ball must rebound in a tight vertical cylinder directly outside your left hip.\n  - Eyes: Keep your chin up and eyes on the horizon.\n\u2022 Mistake to avoid: Do not let the weak hand drift inward toward your centerline on the high bounce.",
-          "seatedDescription": "\u2022 How to do it: Repeat the high-to-low cycle using only your off-hand. Focus on driving downward force through the left palm pad and triceps on the high dribbles.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Ball must rebound in a tight vertical cylinder directly outside your left hip.\n  - Eyes: Keep your chin up and eyes on the horizon.\n\u2022 Mistake to avoid: Do not let the weak hand drift inward toward your centerline on the high bounce. (Seated Modification: Keep your spine tall, isolate the wrist and arm.)"
+          "cues": [
+            "Push the floor down",
+            "Cup outside hemisphere of ball"
+          ],
+          "seatedAdaptation": "Drop low bounce beside left caster/foot; do not bend forward at waist.",
+          "handAssignment": "LEFT_ONLY"
         },
         {
           "id": "1_7",
           "name": "Tight V-Dribble (Front)",
-          "durationSeconds": 150,
+          "durationSeconds": 120,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: From an athletic stance, push and pull the ball in an inverted \"V\" shape across your midline with one hand, moving it back and forth like a windshield wiper. Switch hands halfway.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Never exceed 60 cm width (stay strictly within shoulder width). Bounce height must stay below the knee.\n  - Eyes: Lock eyes forward; rely on fingertip sensation to detect the ball's apex.\n\u2022 Mistake to avoid: Do not slap the ball back and forth; your hand must ride the outside curve of the ball and push-roll it across.",
-          "handAssignment": "SPLIT_HALFWAY",
-          "standingDescription": "\u2022 How to do it: From an athletic stance, push and pull the ball in an inverted \"V\" shape across your midline with one hand, moving it back and forth like a windshield wiper. Switch hands halfway.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Never exceed 60 cm width (stay strictly within shoulder width). Bounce height must stay below the knee.\n  - Eyes: Lock eyes forward; rely on fingertip sensation to detect the ball's apex.\n\u2022 Mistake to avoid: Do not slap the ball back and forth; your hand must ride the outside curve of the ball and push-roll it across.",
-          "seatedDescription": "\u2022 How to do it: From an athletic stance, push and pull the ball in an inverted \"V\" shape across your midline with one hand, moving it back and forth like a windshield wiper. Switch hands halfway.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Never exceed 60 cm width (stay strictly within shoulder width). Bounce height must stay below the knee.\n  - Eyes: Lock eyes forward; rely on fingertip sensation to detect the ball's apex.\n\u2022 Mistake to avoid: Do not slap the ball back and forth; your hand must ride the outside curve of the ball and push-roll it across. (Seated Modification: Pass the ball tightly under or around your legs while maintaining a neutral spine.)"
+          "cues": [
+            "Push-pull crossover below knee",
+            "Keep bounce inside shoulder width"
+          ],
+          "seatedAdaptation": "Bounce directly between open knees; focus on snappy lateral wrist angles.",
+          "handAssignment": "SPLIT_HALFWAY"
         },
         {
           "id": "1_8",
           "name": "2-Pound + Crossover",
-          "durationSeconds": 180,
+          "durationSeconds": 150,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Pound twice hard with your right hand outside your right knee, then execute a crisp cross to the left hand. Pound twice with the left hand, then cross back to the right.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Total crossover width must stay under 1 meter. The crossover bounce must land dead center between your feet below knee height.\n  - Eyes: Fix gaze forward; do not watch the ball cross your body.\n\u2022 Mistake to avoid: Do not let your off-hand reach forward across your body to grab the ball early. Let the ball travel all the way to the receiving pocket.",
-          "handAssignment": "BOTH_HANDS_CONTINUOUS",
-          "standingDescription": "\u2022 How to do it: Pound twice hard with your right hand outside your right knee, then execute a crisp cross to the left hand. Pound twice with the left hand, then cross back to the right.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Total crossover width must stay under 1 meter. The crossover bounce must land dead center between your feet below knee height.\n  - Eyes: Fix gaze forward; do not watch the ball cross your body.\n\u2022 Mistake to avoid: Do not let your off-hand reach forward across your body to grab the ball early. Let the ball travel all the way to the receiving pocket.",
-          "seatedDescription": "\u2022 How to do it: Pound twice hard with your right hand outside your right knee, then execute a crisp cross to the left hand. Pound twice with the left hand, then cross back to the right.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Total crossover width must stay under 1 meter. The crossover bounce must land dead center between your feet below knee height.\n  - Eyes: Fix gaze forward; do not watch the ball cross your body.\n\u2022 Mistake to avoid: Do not let your off-hand reach forward across your body to grab the ball early. Let the ball travel all the way to the receiving pocket. (Seated Modification: Pass the ball tightly under or around your legs while maintaining a neutral spine.)"
+          "cues": [
+            "2 hard pounds, snap cross",
+            "Receive with soft wrist catch"
+          ],
+          "seatedAdaptation": "Pound wide outside thighs, snap cross through center gap.",
+          "handAssignment": "BOTH_HANDS_CONTINUOUS"
         },
         {
           "id": "1_9",
           "name": "Crossover with Shift",
-          "durationSeconds": 180,
+          "durationSeconds": 140,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Continuous low crossovers side-to-side. As the ball crosses left, load your weight into your left foot instep. As it crosses right, transfer weight into the right instep.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep your feet completely inside the 2.5 m\u00b2 footprint; do not travel or jump laterally.\n  - Height: Keep the ball bounce below mid-shin level.\n\u2022 Mistake to avoid: Do not lean your upper torso off-balance. Shift only your hips and weight while keeping your spine neutral and head stable.",
-          "handAssignment": "BOTH_HANDS_CONTINUOUS",
-          "standingDescription": "\u2022 How to do it: Continuous low crossovers side-to-side. As the ball crosses left, load your weight into your left foot instep. As it crosses right, transfer weight into the right instep.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep your feet completely inside the 2.5 m\u00b2 footprint; do not travel or jump laterally.\n  - Height: Keep the ball bounce below mid-shin level.\n\u2022 Mistake to avoid: Do not lean your upper torso off-balance. Shift only your hips and weight while keeping your spine neutral and head stable.",
-          "seatedDescription": "\u2022 How to do it: Continuous low crossovers side-to-side. As the ball crosses left, load your weight into your left foot instep. As it crosses right, transfer weight into the right instep.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep your feet completely inside the 2.5 m\u00b2 footprint; do not travel or jump laterally.\n  - Height: Keep the ball bounce below mid-shin level.\n\u2022 Mistake to avoid: Do not lean your upper torso off-balance. Shift only your hips and weight while keeping your spine neutral and head stable. (Seated Modification: Pass the ball tightly under or around your legs while maintaining a neutral spine.)"
+          "cues": [
+            "Subtle weight transfer between insteps",
+            "Don't rush the weak hand"
+          ],
+          "seatedAdaptation": "Shift shoulder and head lean side-to-side while hips stay grounded on chair.",
+          "handAssignment": "BOTH_HANDS_CONTINUOUS"
         },
         {
           "id": "1_10",
           "name": "Off-Hand Wall-Tap Isolation",
-          "durationSeconds": 120,
+          "durationSeconds": 110,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Maintain a continuous, low, stationary dribble with your active hand while your non-dribbling hand reaches forward and taps the wall rhythmically at chest height. Switch hands halfway.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Dribble must stay within a 30 cm radius beside your foot.\n  - Eyes: Look straight at the spot you are tapping on the wall, not down at the dribble.\n\u2022 Mistake to avoid: Do not pause your dribble rhythm when your tapping hand makes contact with the wall.",
+          "cues": [
+            "Tap wall with off-hand continuously",
+            "Keep dribble low and steady"
+          ],
+          "seatedAdaptation": "Tap desk, chair back, or wall beside you while maintaining low ankle dribble.",
           "handAssignment": "SPLIT_HALFWAY"
         }
       ]
@@ -131,40 +179,50 @@
       "drills": [
         {
           "id": "2_1",
-          "name": "Left-Hand Ankle Pounds",
+          "name": "Alternating Ankle Pounds (60s Right / 60s Left)",
           "durationSeconds": 120,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Warm up the weak hand at shoe height with rapid, compact pounds.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Maximum 20 cm bounce height.\n  - Eyes: Do not look down; look straight ahead at your wall target.\n\u2022 Mistake to avoid: Don't let your chest drop forward onto your knees as you fatigue.",
-          "handAssignment": "LEFT_ONLY",
-          "standingDescription": "\u2022 How to do it: Warm up the weak hand at shoe height with rapid, compact pounds.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Maximum 20 cm bounce height.\n  - Eyes: Do not look down; look straight ahead at your wall target.\n\u2022 Mistake to avoid: Don't let your chest drop forward onto your knees as you fatigue.",
-          "seatedDescription": "\u2022 How to do it: Warm up the weak hand at shoe height with rapid, compact pounds.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Maximum 20 cm bounce height.\n  - Eyes: Do not look down; look straight ahead at your wall target.\n\u2022 Mistake to avoid: Don't let your chest drop forward onto your knees as you fatigue. (Seated Modification: Keep your spine tall, isolate the wrist and arm.)"
+          "cues": [
+            "Establish rhythm",
+            "Hinge hips, protect L5-S1"
+          ],
+          "seatedAdaptation": "Dribble outside chair legs; isolate wrists with tall posture.",
+          "handAssignment": "SPLIT_HALFWAY"
         },
         {
           "id": "2_2",
-          "name": "Left-Hand Side Pocket",
+          "name": "Alternating Side Pocket (60s Right / 60s Left)",
           "durationSeconds": 120,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Linear push-pull alongside your left shoe heel.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep forward-backward travel strictly within 40 cm.\n  - Eyes: Eyes up at 90 degrees to the wall or screen.\n\u2022 Mistake to avoid: No upward palm turn at either turnaround.",
-          "handAssignment": "LEFT_ONLY",
-          "standingDescription": "\u2022 How to do it: Linear push-pull alongside your left shoe heel.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep forward-backward travel strictly within 40 cm.\n  - Eyes: Eyes up at 90 degrees to the wall or screen.\n\u2022 Mistake to avoid: No upward palm turn at either turnaround.",
-          "seatedDescription": "\u2022 How to do it: Linear push-pull alongside your left shoe heel.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Keep forward-backward travel strictly within 40 cm.\n  - Eyes: Eyes up at 90 degrees to the wall or screen.\n\u2022 Mistake to avoid: No upward palm turn at either turnaround. (Seated Modification: Keep your spine tall, isolate the wrist and arm.)"
+          "cues": [
+            "Activate lats and triceps",
+            "Feel the ball padding"
+          ],
+          "seatedAdaptation": "Linear push-pull beside hips, avoiding backrest contact.",
+          "handAssignment": "SPLIT_HALFWAY"
         },
         {
           "id": "2_3",
           "name": "Low Rapid V-Crossovers",
           "durationSeconds": 120,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: Non-stop alternating crossovers in front of the body with zero setup pounds in between.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Width strictly between 60 cm and 80 cm. Height strictly below the kneecaps.\n  - Eyes: Eyes up off the floor entirely.\n\u2022 Mistake to avoid: Do not let the ball float upward. Push each bounce down aggressively so the ball hits the floor instantly.",
-          "handAssignment": "BOTH_HANDS_CONTINUOUS",
-          "standingDescription": "\u2022 How to do it: Non-stop alternating crossovers in front of the body with zero setup pounds in between.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Width strictly between 60 cm and 80 cm. Height strictly below the kneecaps.\n  - Eyes: Eyes up off the floor entirely.\n\u2022 Mistake to avoid: Do not let the ball float upward. Push each bounce down aggressively so the ball hits the floor instantly.",
-          "seatedDescription": "\u2022 How to do it: Non-stop alternating crossovers in front of the body with zero setup pounds in between.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Width strictly between 60 cm and 80 cm. Height strictly below the kneecaps.\n  - Eyes: Eyes up off the floor entirely.\n\u2022 Mistake to avoid: Do not let the ball float upward. Push each bounce down aggressively so the ball hits the floor instantly. (Seated Modification: Pass the ball tightly under or around your legs while maintaining a neutral spine.)"
+          "cues": [
+            "Push-roll across shin line",
+            "Strictly below knees"
+          ],
+          "seatedAdaptation": "Keep bounce low between feet in front of chair base.",
+          "handAssignment": "BOTH_HANDS_CONTINUOUS"
         },
         {
           "id": "2_4",
           "name": "1-Pound Rapid Cross",
           "durationSeconds": 120,
           "focusMode": "FULL_FOCUS",
-          "description": "\u2022 How to do it: One hard pound with the right hand, cross to left; one hard pound with the left hand, cross to right.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Width capped at 1 meter. Both pounds and crosses must hit identical return heights.\n  - Eyes: Fix eyes forward on the screen or wall.\n\u2022 Mistake to avoid: Do not make the left-hand pound softer or slower than the right-hand pound.",
+          "cues": [
+            "Equalize force between hands",
+            "Prepare for distraction mode"
+          ],
+          "seatedAdaptation": "One pound outside knee, quick snap cross below knees.",
           "handAssignment": "BOTH_HANDS_CONTINUOUS"
         },
         {
@@ -172,35 +230,47 @@
           "name": "Continuous Rhythmic Crossovers",
           "durationSeconds": 180,
           "focusMode": "DISTRACTION_PERMITTED",
-          "description": "\u2022 How to do it: Continuous uninterrupted crossing while watching your iPad, movie, or TV screen.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Crossover width must stay within 80 cm.\n  - Eyes: 100% visual focus on the screen/content. If you have to look down at the ball, immediately slow your crossover tempo until your hands regain feel.\n\u2022 Mistake to avoid: Don't let the ball drift forward into the room; keep the floor bounce point on the line between your big toes.",
-          "handAssignment": "BOTH_HANDS_CONTINUOUS",
-          "standingDescription": "\u2022 How to do it: Continuous uninterrupted crossing while watching your iPad, movie, or TV screen.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Crossover width must stay within 80 cm.\n  - Eyes: 100% visual focus on the screen/content. If you have to look down at the ball, immediately slow your crossover tempo until your hands regain feel.\n\u2022 Mistake to avoid: Don't let the ball drift forward into the room; keep the floor bounce point on the line between your big toes.",
-          "seatedDescription": "\u2022 How to do it: Continuous uninterrupted crossing while watching your iPad, movie, or TV screen.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Crossover width must stay within 80 cm.\n  - Eyes: 100% visual focus on the screen/content. If you have to look down at the ball, immediately slow your crossover tempo until your hands regain feel.\n\u2022 Mistake to avoid: Don't let the ball drift forward into the room; keep the floor bounce point on the line between your big toes. (Seated Modification: Pass the ball tightly under or around your legs while maintaining a neutral spine.)"
-        },
-        {
-          "id": "2_6",
-          "name": "Accordion Dribbles (Alternating)",
-          "durationSeconds": 180,
-          "focusMode": "DISTRACTION_PERMITTED",
-          "description": "\u2022 How to do it: Continuous alternating dribbles while shifting smoothly between high pounds (shoulder level) and ankle-height micro-pounds.\n\u2022 Constraints & Guardrails:\n  - Boundaries: High dribble capped at shoulder level; low dribble capped at ankle level.\n  - Eyes: Keep eyes on the screen; track the ball purely through arm extension feel.\n\u2022 Mistake to avoid: Do not stand completely upright on high dribbles\u2014keep a slight knee bend at all times.",
+          "cues": [
+            "Eyes up, watch screen",
+            "Rely on proprioception"
+          ],
+          "seatedAdaptation": "Continuous ankle-height crossover with spine fully neutral.",
           "handAssignment": "BOTH_HANDS_CONTINUOUS"
         },
         {
-          "id": "2_7",
-          "name": "Figure-8 Dribbles",
+          "id": "2_6",
+          "name": "Accordion Dribbles (Alternating Hands)",
           "durationSeconds": 180,
           "focusMode": "DISTRACTION_PERMITTED",
-          "description": "\u2022 How to do it: Hinge deeply at the hips and weave the ball continuously in a figure-8 path around and between both legs.\n\u2022 Constraints & Guardrails:\n  - Boundaries: The ball must stay entirely within your stance width (feet shoulder-width apart, ~50\u201360 cm).\n  - Eyes: Keep your chin up and eyes pointed forward; do not look down through your legs.\n\u2022 Mistake to avoid: Do not curve or hunch your lumbar spine. If your lower back tires, pause for 5 seconds, reset your hips, and resume.",
-          "handAssignment": "BOTH_HANDS_CONTINUOUS",
-          "standingDescription": "\u2022 How to do it: Hinge deeply at the hips and weave the ball continuously in a figure-8 path around and between both legs.\n\u2022 Constraints & Guardrails:\n  - Boundaries: The ball must stay entirely within your stance width (feet shoulder-width apart, ~50\u201360 cm).\n  - Eyes: Keep your chin up and eyes pointed forward; do not look down through your legs.\n\u2022 Mistake to avoid: Do not curve or hunch your lumbar spine. If your lower back tires, pause for 5 seconds, reset your hips, and resume.",
-          "seatedDescription": "\u2022 How to do it: Hinge deeply at the hips and weave the ball continuously in a figure-8 path around and between both legs.\n\u2022 Constraints & Guardrails:\n  - Boundaries: The ball must stay entirely within your stance width (feet shoulder-width apart, ~50\u201360 cm).\n  - Eyes: Keep your chin up and eyes pointed forward; do not look down through your legs.\n\u2022 Mistake to avoid: Do not curve or hunch your lumbar spine. If your lower back tires, pause for 5 seconds, reset your hips, and resume. (Seated Modification: Pass the ball tightly under or around your legs while maintaining a neutral spine.)"
+          "cues": [
+            "Change height smoothly",
+            "Keep eyes on screen"
+          ],
+          "seatedAdaptation": "Alternate 3 high / 3 low reps per hand outside chair perimeter.",
+          "handAssignment": "SPLIT_HALFWAY"
+        },
+        {
+          "id": "2_7",
+          "name": "Figure-8 / Seated Leg Weave",
+          "durationSeconds": 180,
+          "focusMode": "DISTRACTION_PERMITTED",
+          "cues": [
+            "Thread through legs",
+            "Maintain hip hinge posture"
+          ],
+          "seatedAdaptation": "Seated Single-Leg Underpass: elevate one thigh slightly to snap under, then switch.",
+          "handAssignment": "BOTH_HANDS_CONTINUOUS"
         },
         {
           "id": "2_8",
           "name": "Free Flow / Freestyle",
           "durationSeconds": 180,
           "focusMode": "DISTRACTION_PERMITTED",
-          "description": "\u2022 How to do it: String together crossovers, pocket pulls, V-dribbles, and height variations at your own rhythm.\n\u2022 Constraints & Guardrails:\n  - Boundaries: Stay inside your 2.5 m\u00b2 area; keep all crossovers and moves under 1 meter total width.\n  - Eyes: Full eyes-up screen/distraction mode.\n\u2022 Mistake to avoid: Do not repeat only your favorite right-hand move. Force an alternating sequence (every right-hand move must be mirrored or followed by a left-hand counter).",
+          "cues": [
+            "Chain moves below knee",
+            "Reset posture if spine rounds"
+          ],
+          "seatedAdaptation": "Freestyle combo outside legs and through center without rising off seat.",
           "handAssignment": "BOTH_HANDS_CONTINUOUS"
         }
       ]
