@@ -67,6 +67,7 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
       if (prev < phase.drills.length - 1) {
         setTimeLeft(phase.drills[prev + 1].durationSeconds);
         endTimeRef.current = null; // Reset for next drill
+        setIsPlaying(false); // Pause automatically before next drill starts
         return prev + 1;
       }
       onEndWorkout(true);
@@ -114,7 +115,7 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
   }, [isPlaying, timeLeft, handleDrillComplete]);
 
 
-  const skipDrill = () => {
+  const skipDrillForward = () => {
     handleDrillComplete();
   };
 
@@ -181,7 +182,7 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
               ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' 
               : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
           }`}>
-            {currentDrill.focusMode === 'FULL_FOCUS' ? 'Full Visual Focus' : 'iPad / Media Permitted'}
+            {currentDrill.focusMode === 'FULL_FOCUS' ? 'Full Focus' : 'Media OK'}
           </div>
         </div>
 
@@ -193,6 +194,13 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
           <div className="text-xl sm:text-2xl text-zinc-300 mt-4 font-medium text-center">
             {currentDrill.name}
           </div>
+          
+          {/* Status badge when paused */}
+          {!isPlaying && timeLeft === currentDrill.durationSeconds && (
+            <div className="mt-4 px-4 py-1.5 bg-indigo-500/20 text-indigo-400 rounded-full text-sm font-semibold animate-pulse">
+              Press Play to Start
+            </div>
+          )}
         </div>
 
         {/* Info Button */}
