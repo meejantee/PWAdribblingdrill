@@ -3,6 +3,7 @@ import { useUserData } from '../hooks/useUserData';
 import workoutsData from '../data/workouts.json';
 import { ReadinessModal } from '../components/ReadinessModal';
 import { Lock, Unlock, Zap, Activity, Trophy, RotateCcw } from 'lucide-react';
+import { isSameTrainingDay, getTrainingDayOfWeek } from '../utils/dateUtils';
 
 interface DashboardProps {
   onStartWorkout: (phaseId: string, mode: 'standing' | 'seated') => void;
@@ -14,11 +15,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
   const [showReadinessModal, setShowReadinessModal] = useState(false);
   const displayedStreak = getDisplayedStreak();
 
-  const isCompletedToday = Boolean(userData.lastWorkoutDate && new Date(userData.lastWorkoutDate).toDateString() === new Date().toDateString());
+  const isCompletedToday = Boolean(
+    userData.lastWorkoutDate && isSameTrainingDay(userData.lastWorkoutDate, new Date())
+  );
 
   const currentDay = useMemo(() => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    return days[new Date().getDay()];
+    return getTrainingDayOfWeek(new Date());
   }, []);
 
   const dayContextTag = (workoutsData.scheduleContext as any)[currentDay] || 'Standard Training Day';

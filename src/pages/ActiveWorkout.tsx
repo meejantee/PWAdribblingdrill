@@ -115,7 +115,7 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
   }, [isPlaying, timeLeft, handleDrillComplete]);
 
 
-  const skipDrillForward = () => {
+  const skipDrill = () => {
     handleDrillComplete();
   };
 
