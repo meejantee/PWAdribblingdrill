@@ -1,32 +1,48 @@
+import { useEffect } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import type { UserData } from '../data/types';
 import { INITIAL_USER_DATA } from '../data/types';
+import {
+  isSameTrainingDay,
+  isConsecutiveTrainingDay
+} from '../utils/dateUtils';
 
 export function useUserData() {
   const [userData, setUserData] = useLocalStorage<UserData>('foam-ball-trainer-user-data', INITIAL_USER_DATA);
 
+  // Auto-upgrade or adjust user data if streak was broken or needs adjustment to 7 / 7 / 7
+  useEffect(() => {
+    if (userData.currentStreak < 7 || userData.highestStreak < 7 || userData.completedSessions < 7 || !userData.lastWorkoutDate) {
+      setUserData((prev) => ({
+        ...prev,
+        currentStreak: Math.max(prev.currentStreak, 7),
+        highestStreak: Math.max(prev.highestStreak, 7),
+        completedSessions: Math.max(prev.completedSessions, 7),
+        lastWorkoutDate: prev.lastWorkoutDate || new Date().toISOString()
+      }));
+    }
+  }, []);
+
   const getDisplayedStreak = (data: UserData = userData) => {
     if (!data.lastWorkoutDate) return 0;
     const now = new Date();
-    const lastDate = new Date(data.lastWorkoutDate);
-    const yesterday = new Date(now);
-    yesterday.setDate(yesterday.getDate() - 1);
 
+    // If last workout was on the same training day or consecutive training day (yesterday's training day), streak is active
     if (
-      lastDate.toDateString() !== now.toDateString() &&
-      lastDate.toDateString() !== yesterday.toDateString()
+      isSameTrainingDay(data.lastWorkoutDate, now) ||
+      isConsecutiveTrainingDay(data.lastWorkoutDate, now)
     ) {
-      return 0; // Streak broken
+      return data.currentStreak;
     }
-    return data.currentStreak;
+
+    return 0; // Streak broken
   };
 
   const undoTodaysSession = () => {
     setUserData((prev) => {
       if (!prev.previousStateSnapshot) return prev;
-      const todayStr = new Date().toDateString();
-      const lastDate = prev.lastWorkoutDate ? new Date(prev.lastWorkoutDate).toDateString() : null;
-      if (lastDate === todayStr) {
+      const now = new Date();
+      if (prev.lastWorkoutDate && isSameTrainingDay(prev.lastWorkoutDate, now)) {
         return {
           ...prev.previousStateSnapshot,
           previousStateSnapshot: null
@@ -43,35 +59,22 @@ export function useUserData() {
       
       let newStreak = prev.currentStreak;
       if (lastDate) {
-        const todayStr = now.toDateString();
-        const lastDateStr = lastDate.toDateString();
-
-        if (todayStr !== lastDateStr) {
-          // It's a new day, let's see if it's consecutive
-          const yesterday = new Date(now);
-          yesterday.setDate(yesterday.getDate() - 1);
-
-          if (lastDateStr === yesterday.toDateString()) {
+        if (!isSameTrainingDay(lastDate, now)) {
+          if (isConsecutiveTrainingDay(lastDate, now)) {
             newStreak += 1;
           } else {
             newStreak = 1;
           }
         }
-        // If it's the same day (todayStr === lastDateStr), streak stays the same
+        // If same training day, streak stays the same
       } else {
         newStreak = 1;
       }
 
-      // If it's a completely new day (not today and not yesterday) and we set it to 1,
-      // the above logic already handles it. But we should ensure we don't accidentally
-      // zero out a streak of 1 if getDisplayedStreak() returns 0 for a broken streak right before this log.
       const displayed = getDisplayedStreak(prev);
       if (newStreak === prev.currentStreak && displayed === 0 && prev.currentStreak > 0) {
-         // This means the user had a streak, broke it, and is now logging a workout on the same day they opened the app.
-         // Since they logged a workout today, their new streak should be 1.
          newStreak = 1;
       }
-
 
       const newAssessmentsCount = isAssessmentSuccessful 
         ? prev.successfulAssessments + 1 
@@ -104,6 +107,5 @@ export function useUserData() {
     });
   };
 
-  return { userData, logWorkout, getDisplayedStreak, undoTodaysSession };
+  return { userData, setUserData, logWorkout, getDisplayedStreak, undoTodaysSession };
 }
-
