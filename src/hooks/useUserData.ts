@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import type { UserData } from '../data/types';
 import { INITIAL_USER_DATA } from '../data/types';
@@ -9,19 +8,6 @@ import {
 
 export function useUserData() {
   const [userData, setUserData] = useLocalStorage<UserData>('foam-ball-trainer-user-data', INITIAL_USER_DATA);
-
-  // Auto-upgrade or adjust user data if streak was broken or needs adjustment to 7 / 7 / 7
-  useEffect(() => {
-    if (userData.currentStreak < 7 || userData.highestStreak < 7 || userData.completedSessions < 7 || !userData.lastWorkoutDate) {
-      setUserData((prev) => ({
-        ...prev,
-        currentStreak: Math.max(prev.currentStreak, 7),
-        highestStreak: Math.max(prev.highestStreak, 7),
-        completedSessions: Math.max(prev.completedSessions, 7),
-        lastWorkoutDate: prev.lastWorkoutDate || new Date().toISOString()
-      }));
-    }
-  }, []);
 
   const getDisplayedStreak = (data: UserData = userData) => {
     if (!data.lastWorkoutDate) return 0;

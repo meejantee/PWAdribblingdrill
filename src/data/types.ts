@@ -11,9 +11,9 @@ export interface UserData {
 export const INITIAL_USER_DATA: UserData = {
   successfulAssessments: 0,
   unlockedPhases: ['phase_1'],
-  completedSessions: 7,
-  currentStreak: 7,
-  highestStreak: 7,
-  lastWorkoutDate: new Date().toISOString(),
+  completedSessions: 0,
+  currentStreak: 0,
+  highestStreak: 0,
+  lastWorkoutDate: null,
   previousStateSnapshot: null
 };
