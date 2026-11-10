@@ -5,14 +5,24 @@ import { PostWorkoutAssessment } from './pages/PostWorkoutAssessment';
 
 type AppState = 'dashboard' | 'workout' | 'assessment';
 
+export interface WorkoutSessionConfig {
+  phaseId: string;
+  mode: 'standing' | 'seated';
+  exerciseIds: string[];
+  isFullDribbling: boolean;
+}
+
 function App() {
   const [appState, setAppState] = useState<AppState>('dashboard');
-  const [activePhase, setActivePhase] = useState<string>('');
-  const [activeMode, setActiveMode] = useState<'standing' | 'seated'>('standing');
+  const [sessionConfig, setSessionConfig] = useState<WorkoutSessionConfig>({
+    phaseId: 'phase_1',
+    mode: 'standing',
+    exerciseIds: [],
+    isFullDribbling: true
+  });
 
-  const handleStartWorkout = (phaseId: string, mode: 'standing' | 'seated') => {
-    setActivePhase(phaseId);
-    setActiveMode(mode);
+  const handleStartWorkout = (config: WorkoutSessionConfig) => {
+    setSessionConfig(config);
     setAppState('workout');
   };
 
@@ -36,14 +46,18 @@ function App() {
       
       {appState === 'workout' && (
         <ActiveWorkout 
-          phaseId={activePhase} 
-          mode={activeMode} 
+          phaseId={sessionConfig.phaseId} 
+          mode={sessionConfig.mode} 
+          exerciseIds={sessionConfig.exerciseIds}
           onEndWorkout={handleEndWorkout} 
         />
       )}
       
       {appState === 'assessment' && (
-        <PostWorkoutAssessment onComplete={handleAssessmentComplete} />
+        <PostWorkoutAssessment 
+          isFullDribbling={sessionConfig.isFullDribbling}
+          onComplete={handleAssessmentComplete} 
+        />
       )}
     </>
   );

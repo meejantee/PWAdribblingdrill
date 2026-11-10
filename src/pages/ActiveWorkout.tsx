@@ -1,34 +1,49 @@
 import React, { useState, useEffect, useRef } from 'react';
 import workoutsData from '../data/workouts.json';
+import type { StrengthExercise } from '../data/types';
 import { playCountdown, playTransition, unlockAudio } from '../utils/audio';
-import { Play, Pause, SkipForward, SkipBack, X, CheckCircle, Info } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, X, CheckCircle, Info, Dumbbell, Check } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
 interface ActiveWorkoutProps {
   phaseId: string;
   mode: 'standing' | 'seated';
+  exerciseIds: string[];
   onEndWorkout: (completed: boolean) => void;
 }
 
-export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onEndWorkout }) => {
-  const phase = workoutsData.phases.find(p => p.id === phaseId)!;
-  
+export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({
+  phaseId,
+  mode,
+  exerciseIds,
+  onEndWorkout
+}) => {
+  const phase = workoutsData.phases.find(p => p.id === phaseId) || workoutsData.phases[0];
+  const exercises: StrengthExercise[] = exerciseIds
+    .map(id => (workoutsData.exerciseLibrary as Record<string, StrengthExercise>)[id])
+    .filter(Boolean);
+
+  // Stage: 'dribbling' -> 'strength'
+  const [stage, setStage] = useState<'dribbling' | 'strength'>('dribbling');
+
+  // --- STAGE 1: DRIBBLING STATE ---
   const [currentDrillIndex, setCurrentDrillIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
-  
-  // Time remaining in current drill (seconds)
   const [timeLeft, setTimeLeft] = useState(phase.drills[0].durationSeconds);
-  
-  // For drift-free calculation
+
+  // --- STAGE 2: STRENGTH STACK STATE ---
+  const [currentExIndex, setCurrentExIndex] = useState(0);
+  const [currentSet, setCurrentSet] = useState(1);
+  const [isResting, setIsResting] = useState(false);
+  const [restTimeLeft, setRestTimeLeft] = useState(0);
+
   const endTimeRef = useRef<number | null>(null);
   const requestRef = useRef<number>(0);
-  
-  // Wake lock reference
   const wakeLockRef = useRef<any>(null);
 
   const currentDrill = phase.drills[currentDrillIndex];
-  
+  const currentExercise = exercises[currentExIndex];
   const postureCues = workoutsData.postureCues[mode];
 
   // Wake lock management
@@ -43,7 +58,7 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
       }
     };
 
-    if (isPlaying) {
+    if (isPlaying || stage === 'strength') {
       requestWakeLock();
     } else if (wakeLockRef.current) {
       wakeLockRef.current.release().then(() => {
@@ -54,9 +69,8 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
     return () => {
       if (wakeLockRef.current) wakeLockRef.current.release();
     };
-  }, [isPlaying]);
+  }, [isPlaying, stage]);
 
-  // Audio unlock on mount
   useEffect(() => {
     unlockAudio();
   }, []);
@@ -65,19 +79,25 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
     setCurrentDrillIndex(prev => {
       if (prev < phase.drills.length - 1) {
         setTimeLeft(phase.drills[prev + 1].durationSeconds);
-        endTimeRef.current = null; // Reset for next drill
-        setIsPlaying(false); // Pause automatically before next drill starts
+        endTimeRef.current = null;
+        setIsPlaying(false);
         return prev + 1;
       }
+      // All dribbling drills finished! Check if there are strength exercises queued
       setIsPlaying(false);
-      onEndWorkout(true);
+      if (exercises.length > 0) {
+        playTransition();
+        setStage('strength');
+      } else {
+        onEndWorkout(true);
+      }
       return prev;
     });
-  }, [phase.drills, onEndWorkout]);
+  }, [phase.drills, exercises.length, onEndWorkout]);
 
-  // Timer logic
+  // Stage 1 Dribbling Timer
   useEffect(() => {
-    if (!isPlaying) {
+    if (stage !== 'dribbling' || !isPlaying) {
       endTimeRef.current = null;
       cancelAnimationFrame(requestRef.current);
       return;
@@ -93,8 +113,6 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
 
       if (remaining !== timeLeft) {
         setTimeLeft(remaining);
-        
-        // Audio cues
         if (remaining > 0 && remaining <= 3) {
           playCountdown();
         } else if (remaining === 0) {
@@ -110,14 +128,49 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
     };
 
     requestRef.current = requestAnimationFrame(tick);
-
     return () => cancelAnimationFrame(requestRef.current);
-  }, [isPlaying, timeLeft, handleDrillComplete]);
+  }, [stage, isPlaying, timeLeft, handleDrillComplete]);
 
+  // Stage 2 Strength Rest Timer
+  useEffect(() => {
+    if (stage !== 'strength' || !isResting) return;
 
-  const skipDrillForward = () => {
-    handleDrillComplete();
+    const interval = setInterval(() => {
+      setRestTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          playTransition();
+          setIsResting(false);
+          return 0;
+        }
+        if (prev <= 4) {
+          playCountdown();
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [stage, isResting]);
+
+  const handleCompleteSet = () => {
+    unlockAudio();
+    if (currentSet < currentExercise.sets) {
+      setCurrentSet(prev => prev + 1);
+      setRestTimeLeft(currentExercise.restSeconds);
+      setIsResting(true);
+    } else if (currentExIndex < exercises.length - 1) {
+      setCurrentExIndex(prev => prev + 1);
+      setCurrentSet(1);
+      setRestTimeLeft(currentExercise.restSeconds);
+      setIsResting(true);
+    } else {
+      playTransition();
+      onEndWorkout(true);
+    }
   };
+
+  const skipDrillForward = () => handleDrillComplete();
 
   const skipDrillBackward = () => {
     if (currentDrillIndex > 0) {
@@ -136,7 +189,105 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
-  // Calculate overall progress
+  // --- RENDER STAGE 2: STRENGTH & SPINE STACK ---
+  if (stage === 'strength' && currentExercise) {
+    const progressPercent = ((currentExIndex + (currentSet - 1) / currentExercise.sets) / exercises.length) * 100;
+
+    return (
+      <div className="h-[100dvh] bg-zinc-950 text-zinc-100 flex flex-col max-w-md mx-auto overflow-hidden">
+        <div className="p-4 flex items-center justify-between border-b border-zinc-900 bg-zinc-950/80 shrink-0">
+          <div className="flex items-center gap-2 text-sm font-bold text-emerald-400">
+            <Dumbbell className="w-4 h-4" />
+            <span>Stage 2: Strength & Spine Stack</span>
+          </div>
+          <button onClick={() => onEndWorkout(false)} className="text-zinc-500 hover:text-zinc-300">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="w-full h-1 bg-zinc-800 shrink-0">
+          <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${progressPercent}%` }} />
+        </div>
+
+        <div className="flex-1 flex flex-col p-6 justify-between overflow-y-auto">
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">
+                Exercise {currentExIndex + 1} of {exercises.length}
+              </span>
+              <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                {currentExercise.category}
+              </span>
+            </div>
+
+            <h2 className="text-2xl font-extrabold text-white mb-2">{currentExercise.name}</h2>
+            <div className="inline-block bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5 text-sm font-semibold text-indigo-300 mb-6">
+              Target: {currentExercise.reps}
+            </div>
+
+            <div className="bg-zinc-900/90 border border-zinc-800 rounded-xl p-4 space-y-2.5">
+              <h4 className="text-xs uppercase tracking-widest text-zinc-400 font-bold">Form & Spine Safety Cues</h4>
+              {currentExercise.cues.map((cue, idx) => (
+                <div key={idx} className="flex gap-2.5 text-sm text-zinc-200 leading-snug">
+                  <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>{cue}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="my-6 text-center">
+            {isResting ? (
+              <div className="bg-indigo-950/40 border border-indigo-500/40 rounded-2xl p-6">
+                <div className="text-xs font-bold uppercase tracking-widest text-indigo-300 mb-1">
+                  Rest Before Next Set
+                </div>
+                <div className="text-6xl font-black tabular-nums text-white my-2">
+                  {formatTime(restTimeLeft)}
+                </div>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="mt-2"
+                  onClick={() => setIsResting(false)}
+                >
+                  Skip Rest
+                </Button>
+              </div>
+            ) : (
+              <div className="py-4">
+                <div className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-1">
+                  Current Set
+                </div>
+                <div className="text-5xl font-black text-white">
+                  Set {currentSet} <span className="text-zinc-600 text-3xl">/ {currentExercise.sets}</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="pt-2">
+            <Button
+              size="lg"
+              variant="primary"
+              disabled={isResting}
+              className="w-full font-bold gap-2 h-16 text-lg"
+              onClick={handleCompleteSet}
+            >
+              <Check className="w-6 h-6" />
+              {currentSet < currentExercise.sets
+                ? `Complete Set ${currentSet} (Start ${currentExercise.restSeconds}s Rest)`
+                : currentExIndex < exercises.length - 1
+                ? 'Finish Exercise & Next'
+                : 'Finish Workout & Claim Streak 🔥'}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --- RENDER STAGE 1: DRIBBLING TIMER ---
   const totalDuration = phase.totalDurationSeconds;
   const elapsedInPrevious = phase.drills.slice(0, currentDrillIndex).reduce((sum, d) => sum + d.durationSeconds, 0);
   const totalElapsed = elapsedInPrevious + (currentDrill.durationSeconds - timeLeft);
@@ -144,7 +295,6 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
 
   return (
     <div className="h-[100dvh] bg-zinc-950 text-zinc-100 flex flex-col max-w-md mx-auto overflow-hidden">
-      {/* Top Bar */}
       <div className="p-4 flex items-center justify-between border-b border-zinc-900 bg-zinc-950/80 z-10 shrink-0">
         <div className="text-sm font-semibold text-zinc-400 truncate pr-4">{phase.name}</div>
         <div className="flex items-center gap-3">
@@ -163,15 +313,11 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
         </div>
       </div>
 
-      {/* Progress Bar */}
       <div className="w-full h-1 bg-zinc-800 shrink-0">
         <div className="h-full bg-indigo-500 transition-all duration-1000 ease-linear" style={{ width: `${progressPercent}%` }} />
       </div>
 
-      {/* Main Content Area */}
       <div className="flex-1 flex flex-col p-6 overflow-hidden">
-        
-        {/* Drill Counter & Focus Mode */}
         <div className="flex items-center justify-between mb-4 shrink-0">
           <div className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">
             Drill {currentDrillIndex + 1} of {phase.drills.length}
@@ -185,7 +331,6 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
           </div>
         </div>
 
-        {/* Timer section */}
         <div className="flex flex-col items-center justify-center flex-1 min-h-0">
           <div className="text-[5.5rem] font-black tracking-tighter leading-none tabular-nums text-white my-2">
             {formatTime(timeLeft)}
@@ -203,22 +348,26 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
             </button>
           </div>
           
-          {/* Status badge when paused */}
           {!isPlaying && timeLeft === currentDrill.durationSeconds && (
             <div className="mt-4 px-4 py-1.5 bg-indigo-500/20 text-indigo-400 rounded-full text-sm font-semibold animate-pulse">
               Press Play to Start
             </div>
           )}
+
+          {exercises.length > 0 && (
+            <div className="mt-6 text-xs text-zinc-500">
+              Up Next: {exercises.length} Strength/Spine exercises
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Controls - Fixed at Bottom */}
       <div className="p-6 pb-8 shrink-0 border-t border-zinc-900 bg-zinc-950">
         <div className="flex items-center justify-center gap-6">
           <Button 
             variant="ghost" 
             size="lg"
-            className="w-14 h-14 rounded-full bg-zinc-800 text-zinc-100 hover:bg-zinc-700 disabled:bg-zinc-900 disabled:text-zinc-600 border border-zinc-700 disabled:border-zinc-800 transition-colors"
+            className="w-14 h-14 rounded-full bg-zinc-800 text-zinc-100 hover:bg-zinc-700 disabled:bg-zinc-900 disabled:text-zinc-600 border border-zinc-700"
             onClick={skipDrillBackward}
             disabled={currentDrillIndex === 0}
           >
@@ -244,16 +393,14 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
           <Button 
             variant="ghost" 
             size="lg"
-            className="w-14 h-14 rounded-full bg-zinc-800 text-zinc-100 hover:bg-zinc-700 disabled:bg-zinc-900 disabled:text-zinc-600 border border-zinc-700 disabled:border-zinc-800 transition-colors"
+            className="w-14 h-14 rounded-full bg-zinc-800 text-zinc-100 hover:bg-zinc-700 border border-zinc-700"
             onClick={skipDrillForward}
-            disabled={currentDrillIndex >= phase.drills.length - 1}
           >
             <SkipForward className="w-6 h-6" />
           </Button>
         </div>
       </div>
 
-      {/* Info Modal */}
       {showInfoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/90 backdrop-blur-sm p-4">
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-sm w-full shadow-2xl">
@@ -292,10 +439,7 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({ phaseId, mode, onE
               </div>
             </div>
 
-            <Button 
-              className="w-full mt-8" 
-              onClick={() => setShowInfoModal(false)}
-            >
+            <Button className="w-full mt-8" onClick={() => setShowInfoModal(false)}>
               Got it
             </Button>
           </div>

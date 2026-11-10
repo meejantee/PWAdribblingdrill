@@ -1,12 +1,12 @@
 {
   "scheduleContext": {
-    "Monday": "Standard Training Day",
-    "Tuesday": "Rock Climbing Day",
-    "Wednesday": "Basketball Court Run Day",
-    "Thursday": "Finger Hangboard Day",
-    "Friday": "Active Recovery Day",
-    "Saturday": "Rock Climbing Day",
-    "Sunday": "Rest & Reset Day"
+    "Monday": "Snowboard Legs & Spine Armor",
+    "Tuesday": "Climbing OR Home Pull + Wrist",
+    "Wednesday": "Basketball Game Night (8:30-11 PM)",
+    "Thursday": "Ice Bath Recovery OR Chill Flow",
+    "Friday": "Carve Mobility & 360 Core Stack",
+    "Saturday": "Climbing OR Home Calisthenics",
+    "Sunday": "Family & Spine Decompression"
   },
   "postureCues": {
     "standing": {
@@ -21,7 +21,7 @@
   "phases": [
     {
       "id": "phase_1",
-      "name": "Phase 1: Mechanics & Force",
+      "name": "Phase 1: Mechanics & Force (FULL_DRIBBLING_DRILL)",
       "totalDurationSeconds": 1200,
       "drills": [
         { "id": "1_1", "name": "Fingertip Ball Taps", "durationSeconds": 60, "focusMode": "FULL_FOCUS", "cues": ["Arms extended fully", "Snap rapid taps between fingertips"] },
@@ -38,7 +38,7 @@
     },
     {
       "id": "phase_2",
-      "name": "Phase 2: Flow & Distraction",
+      "name": "Phase 2: Flow & Distraction (FULL_DRIBBLING_DRILL)",
       "totalDurationSeconds": 1200,
       "drills": [
         { "id": "2_1", "name": "Left-Hand Ankle Pounds", "durationSeconds": 120, "focusMode": "FULL_FOCUS", "cues": ["Establish rhythm", "Hinge hips, protect L5-S1"] },
@@ -50,6 +50,242 @@
         { "id": "2_7", "name": "Figure-8 Dribbles", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED", "cues": ["Thread through legs", "Maintain hip hinge posture"] },
         { "id": "2_8", "name": "Free Flow / Freestyle", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED", "cues": ["Chain moves below knee", "Reset posture if spine rounds"] }
       ]
+    },
+    {
+      "id": "chill_flow",
+      "name": "Chill Flow & Seated Dribbling (CHILL_DRIBBLING_DRILL)",
+      "totalDurationSeconds": 540,
+      "drills": [
+        { "id": "c_1", "name": "Seated Fingertip Taps & Shin Wraps", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED", "cues": ["Sit tall on edge of chair/couch to completely deload lower back", "Rapid fingertip spider taps and figure-8 shin wraps"] },
+        { "id": "c_2", "name": "Stationary Pound-to-Pocket Float", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED", "cues": ["Stand tall or sit relaxed—zero lumbar hinge", "Pound once, float ball in pocket to train wrist snap (switch hands halfway)"] },
+        { "id": "c_3", "name": "Smooth Behind-the-Back Rhythm Wraps", "durationSeconds": 180, "focusMode": "DISTRACTION_PERMITTED", "cues": ["60% speed continuous flow", "Keep forearms loose and relaxed"] }
+      ]
     }
-  ]
+  ],
+  "exerciseLibrary": {
+    "bulgarian_split_squat": {
+      "id": "bulgarian_split_squat",
+      "name": "Bulgarian Split Squats",
+      "category": "Snowboard Quad & Glute Drive",
+      "sets": 3,
+      "reps": "8-10 reps / leg",
+      "restSeconds": 45,
+      "cues": [
+        "Back foot elevated on chair/couch",
+        "Slight forward torso lean to load glute and protect lower back",
+        "2-second isometric pause at the bottom of each rep"
+      ]
+    },
+    "high_box_step_up": {
+      "id": "high_box_step_up",
+      "name": "High Box Step-Ups",
+      "category": "Powder Hiking Stamina",
+      "sets": 3,
+      "reps": "10-12 reps / leg",
+      "restSeconds": 45,
+      "cues": [
+        "Place entire foot flat on knee-height chair or step",
+        "Drive straight through lead heel without pushing off trailing foot",
+        "Lower down slowly over 2 full seconds"
+      ]
+    },
+    "mcgill_bird_dog": {
+      "id": "mcgill_bird_dog",
+      "name": "McGill Bird Dogs",
+      "category": "Lower Back Armor",
+      "sets": 3,
+      "reps": "6 reps / side (6s hold)",
+      "restSeconds": 30,
+      "cues": [
+        "Hands and knees, lock spine completely neutral",
+        "Extend opposite arm and heel parallel to floor—do not arch lumbar",
+        "Clench raised fist and push heel back to engage glute"
+      ]
+    },
+    "mcgill_big_3": {
+      "id": "mcgill_big_3",
+      "name": "McGill Big 3 (Curl-Up, Side Plank, Bird Dog)",
+      "category": "360° Spine Armor",
+      "sets": 2,
+      "reps": "6 holds x 8 seconds each",
+      "restSeconds": 30,
+      "cues": [
+        "Modified Curl-Up: Hands under lower back, lift head/shoulders 2 cm only",
+        "Side Plank: Stack knees/feet, lock hips forward",
+        "Bird Dog: 8-second isometric extension per side"
+      ]
+    },
+    "home_pull_dip": {
+      "id": "home_pull_dip",
+      "name": "Pull-Up & Dip Stand Superset",
+      "category": "Climbing & Upper Strength",
+      "sets": 3,
+      "reps": "6-10 Chin-Ups + 8-10 Dips",
+      "restSeconds": 60,
+      "cues": [
+        "Controlled movement on the stand—zero swinging or kipping",
+        "Depress shoulder blades before pulling",
+        "Keep core braced to avoid lumbar hyperextension"
+      ]
+    },
+    "beastmaker_arc_block": {
+      "id": "beastmaker_arc_block",
+      "name": "Beastmaker Yoga-Block ARC (10 Min)",
+      "category": "Finger Capillarity & Sloper Control",
+      "sets": 1,
+      "reps": "10 mins continuous (shift grips every 60s)",
+      "restSeconds": 10,
+      "cues": [
+        "Stand on yoga blocks keeping 70-80% weight on your feet",
+        "Rotate grips every 60-90s: 4-finger edge, 3-finger drag, sloper",
+        "Keep wrists strictly neutral (flat) on slopers"
+      ]
+    },
+    "wrist_armor_circuit": {
+      "id": "wrist_armor_circuit",
+      "name": "Sloper Wrist Armor (Pronation + Reverse Curls)",
+      "category": "Climbing Joint Prehab",
+      "sets": 2,
+      "reps": "12 Lever Rotations + 15 Reverse Curls / arm",
+      "restSeconds": 30,
+      "cues": [
+        "Forearm supported flat on thigh",
+        "Slowly rotate hammer/lever palm-up to palm-down under control",
+        "Follow immediately with 15 light knuckle-to-ceiling reverse wrist curls"
+      ]
+    },
+    "cossack_squat": {
+      "id": "cossack_squat",
+      "name": "Deep Cossack Squats",
+      "category": "Low Snowboard Carving Mobility",
+      "sets": 3,
+      "reps": "6-8 reps / side",
+      "restSeconds": 45,
+      "cues": [
+        "Wide sumo stance, shift weight deeply into one hip",
+        "Keep straight-leg heel on the floor with toes pointed up",
+        "Maintain tall chest without rounding lower back"
+      ]
+    },
+    "band_pallof_press": {
+      "id": "band_pallof_press",
+      "name": "Band Pallof Press + Nose Butter Coil",
+      "category": "360 Trick Core Control",
+      "sets": 3,
+      "reps": "10 reps / side (2s hold)",
+      "restSeconds": 45,
+      "cues": [
+        "Anchor band at chest height, stand in regular/switch snowboard stance",
+        "Press band straight out from sternum and resist rotational pull",
+        "Shift weight onto lead foot for 2s to simulate nose press lock"
+      ]
+    }
+  },
+  "weeklySchedule": {
+    "Monday": {
+      "dayName": "Monday",
+      "tag": "Snowboard Legs & Spine Armor",
+      "hasPopup": false,
+      "defaultPlan": {
+        "dribblingMode": "FULL_DRIBBLING_DRILL",
+        "defaultPosture": "standing",
+        "exercises": ["bulgarian_split_squat", "high_box_step_up", "mcgill_bird_dog"]
+      }
+    },
+    "Tuesday": {
+      "dayName": "Tuesday",
+      "tag": "Climbing OR Home Pull + Wrist",
+      "hasPopup": true,
+      "popupQuestion": "Did you go rock climbing today?",
+      "yesButtonText": "Yes, I went climbing (+1 Streak)",
+      "noButtonText": "No, start Tuesday Home Plan",
+      "onYes": {
+        "awardStreakImmediately": true,
+        "activityLabel": "Rock Climbing Session",
+        "message": "Climbing session logged! +1 Streak secured. Let your forearms recover.",
+        "optionalDribblingMode": "CHILL_DRIBBLING_DRILL"
+      },
+      "onNo": {
+        "dribblingMode": "FULL_DRIBBLING_DRILL",
+        "defaultPosture": "standing",
+        "exercises": ["home_pull_dip", "beastmaker_arc_block", "wrist_armor_circuit"]
+      }
+    },
+    "Wednesday": {
+      "dayName": "Wednesday",
+      "tag": "Basketball Game Night (8:30-11 PM)",
+      "hasPopup": true,
+      "popupQuestion": "Playing Wednesday night basketball (8:30-11 PM)?",
+      "yesButtonText": "Yes, playing hoops tonight (+1 Streak)",
+      "noButtonText": "No game, run Home Dribbling Plan",
+      "onYes": {
+        "awardStreakImmediately": true,
+        "activityLabel": "Wednesday Night Basketball",
+        "message": "Game night logged! +1 Streak secured. Keep your legs 100% fresh for the 3-team rotation.",
+        "optionalDribblingMode": "CHILL_DRIBBLING_DRILL"
+      },
+      "onNo": {
+        "dribblingMode": "FULL_DRIBBLING_DRILL",
+        "defaultPosture": "standing",
+        "exercises": ["mcgill_big_3"]
+      }
+    },
+    "Thursday": {
+      "dayName": "Thursday",
+      "tag": "Ice Bath Recovery OR Chill Flow",
+      "hasPopup": true,
+      "popupQuestion": "Did you go to Ice Bath & Sauna today?",
+      "yesButtonText": "Yes, did Ice Bath & Sauna (+1 Streak)",
+      "noButtonText": "No, start Chill Dribble + Wrist/Spine",
+      "onYes": {
+        "awardStreakImmediately": true,
+        "activityLabel": "Ice Bath & Sauna Contrast Therapy",
+        "message": "Contrast recovery logged! +1 Streak secured. Enjoy deep parasympathetic rest tonight—zero guilt."
+      },
+      "onNo": {
+        "dribblingMode": "CHILL_DRIBBLING_DRILL",
+        "defaultPosture": "seated",
+        "exercises": ["wrist_armor_circuit", "mcgill_big_3"]
+      }
+    },
+    "Friday": {
+      "dayName": "Friday",
+      "tag": "Carve Mobility & 360 Core Stack",
+      "hasPopup": false,
+      "defaultPlan": {
+        "dribblingMode": "FULL_DRIBBLING_DRILL",
+        "defaultPosture": "standing",
+        "exercises": ["cossack_squat", "band_pallof_press", "wrist_armor_circuit"]
+      }
+    },
+    "Saturday": {
+      "dayName": "Saturday",
+      "tag": "Climbing OR Home Calisthenics",
+      "hasPopup": true,
+      "popupQuestion": "Did you go rock climbing today?",
+      "yesButtonText": "Yes, went rock climbing (+1 Streak)",
+      "noButtonText": "No, start Saturday Home Plan",
+      "onYes": {
+        "awardStreakImmediately": true,
+        "activityLabel": "Saturday Rock Climbing",
+        "message": "Saturday sends logged! +1 Streak secured. Stop strength work and let tendons recover.",
+        "optionalDribblingMode": "CHILL_DRIBBLING_DRILL"
+      },
+      "onNo": {
+        "dribblingMode": "FULL_DRIBBLING_DRILL",
+        "defaultPosture": "standing",
+        "exercises": ["home_pull_dip", "bulgarian_split_squat", "mcgill_bird_dog"]
+      }
+    },
+    "Sunday": {
+      "dayName": "Sunday",
+      "tag": "Family & Spine Decompression",
+      "hasPopup": false,
+      "defaultPlan": {
+        "dribblingMode": "CHILL_DRIBBLING_DRILL",
+        "defaultPosture": "seated",
+        "exercises": ["mcgill_big_3"]
+      }
+    }
+  }
 }
