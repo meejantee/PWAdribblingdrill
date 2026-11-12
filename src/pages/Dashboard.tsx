@@ -5,8 +5,9 @@ import { ReadinessModal } from '../components/ReadinessModal';
 import { DailyForkModal } from '../components/DailyForkModal';
 import type { DayPlanConfig, DaySchedule } from '../data/types';
 import type { WorkoutSessionConfig } from '../App';
-import { Lock, Unlock, Zap, Activity, CheckCircle2, Calendar, Dumbbell, Play } from 'lucide-react';
+import { Lock, Unlock, Zap, Activity, CheckCircle2, Calendar, Dumbbell, Play, Trophy, RotateCcw } from 'lucide-react';
 import { Button } from '../components/ui/Button';
+import { getTrainingDayOfWeek } from '../utils/dateUtils';
 
 interface DashboardProps {
   onStartWorkout: (config: WorkoutSessionConfig) => void;
@@ -15,9 +16,10 @@ interface DashboardProps {
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
-  const { userData, isCompletedToday, logExternalActivity } = useUserData();
+  const { userData, isCompletedToday, getDisplayedStreak, undoTodaysSession, logExternalActivity } = useUserData();
 
-  const todayName = useMemo(() => DAYS_OF_WEEK[new Date().getDay()], []);
+  const displayedStreak = getDisplayedStreak();
+  const todayName = useMemo(() => getTrainingDayOfWeek(new Date()), []);
   const [activeDayName, setActiveDayName] = useState<string>(todayName);
 
   // Default to highest unlocked FULL_DRIBBLING_DRILL phase
@@ -77,20 +79,32 @@ export const Dashboard: React.FC<DashboardProps> = ({ onStartWorkout }) => {
   const previewPlan = currentDaySchedule.hasPopup ? currentDaySchedule.onNo : currentDaySchedule.defaultPlan;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-6 flex flex-col max-w-md mx-auto">
+    <div className="min-h-screen bg-transparent text-zinc-100 p-6 flex flex-col max-w-md mx-auto">
       {/* Header */}
       <header className="mb-6 mt-2">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-2">
           <h1 className="text-2xl font-extrabold tracking-tight">Athletic Habit Pulse</h1>
           {isCompletedToday && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Streak Safe
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Streak Safe
+              </span>
+              <button
+                onClick={undoTodaysSession}
+                title="Undo today's session"
+                className="p-1 text-zinc-500 hover:text-zinc-300 transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+            </div>
           )}
         </div>
-        <div className="flex gap-4 text-sm text-zinc-400 mt-2">
+        <div className="flex flex-wrap gap-4 text-sm text-zinc-400">
           <div className="flex items-center gap-1 font-semibold text-zinc-200">
-            <Zap className="w-4 h-4 text-yellow-500 fill-yellow-500" /> {userData.currentStreak} day streak
+            <Zap className="w-4 h-4 text-yellow-500 fill-yellow-500" /> {displayedStreak} day streak
+          </div>
+          <div className="flex items-center gap-1">
+            <Trophy className="w-4 h-4 text-amber-500" /> {userData.highestStreak ?? 0} best
           </div>
           <div className="flex items-center gap-1">
             <Activity className="w-4 h-4 text-blue-400" /> {userData.completedSessions} sessions

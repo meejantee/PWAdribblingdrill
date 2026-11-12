@@ -48,7 +48,7 @@ export const PostWorkoutAssessment: React.FC<PostWorkoutAssessmentProps> = ({ is
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-6 flex flex-col max-w-md mx-auto">
+    <div className="min-h-screen bg-transparent text-zinc-100 p-6 flex flex-col max-w-md mx-auto">
       <div className="flex-1 mt-8">
         <div className="text-center mb-8">
           <div className="inline-block bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">

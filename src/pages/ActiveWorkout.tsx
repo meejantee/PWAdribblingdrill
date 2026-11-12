@@ -30,6 +30,7 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({
   const [currentDrillIndex, setCurrentDrillIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
+  const [currentMode, setCurrentMode] = useState<'standing' | 'seated'>(mode);
   const [timeLeft, setTimeLeft] = useState(phase.drills[0].durationSeconds);
 
   // --- STAGE 2: STRENGTH STACK STATE ---
@@ -43,8 +44,8 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({
   const wakeLockRef = useRef<any>(null);
 
   const currentDrill = phase.drills[currentDrillIndex];
+  const nextDrill = phase.drills[currentDrillIndex + 1];
   const currentExercise = exercises[currentExIndex];
-  const postureCues = workoutsData.postureCues[mode];
 
   // Wake lock management
   useEffect(() => {
@@ -76,15 +77,14 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({
   }, []);
 
   const handleDrillComplete = React.useCallback(() => {
+    setIsPlaying(false);
     setCurrentDrillIndex(prev => {
       if (prev < phase.drills.length - 1) {
         setTimeLeft(phase.drills[prev + 1].durationSeconds);
         endTimeRef.current = null;
-        setIsPlaying(false);
         return prev + 1;
       }
       // All dribbling drills finished! Check if there are strength exercises queued
-      setIsPlaying(false);
       if (exercises.length > 0) {
         playTransition();
         setStage('strength');
@@ -294,58 +294,68 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({
   const progressPercent = (totalElapsed / totalDuration) * 100;
 
   return (
-    <div className="h-[100dvh] bg-zinc-950 text-zinc-100 flex flex-col max-w-md mx-auto overflow-hidden">
-      <div className="p-4 flex items-center justify-between border-b border-zinc-900 bg-zinc-950/80 z-10 shrink-0">
-        <div className="text-sm font-semibold text-zinc-400 truncate pr-4">{phase.name}</div>
+    <div className="min-h-[100dvh] max-h-[100dvh] bg-transparent text-zinc-100 flex flex-col max-w-md mx-auto overflow-hidden relative">
+      {/* Top Bar */}
+      <div className="p-4 flex items-center justify-between border-b border-zinc-900 bg-zinc-800/80 z-10 shrink-0">
+        <div className="flex flex-col">
+          <div className="text-sm font-semibold text-zinc-400 truncate pr-4">{phase.name}</div>
+          <div className="text-xs text-zinc-500">Drill {currentDrillIndex + 1} of {phase.drills.length}</div>
+        </div>
         <div className="flex items-center gap-3">
-          {mode === 'standing' ? (
-            <span className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-emerald-500/20 text-emerald-400">
+          {currentMode === 'standing' ? (
+            <span className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-emerald-500/20 text-emerald-400 hidden sm:inline-block">
               Standing
             </span>
           ) : (
-            <span className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-blue-500/20 text-blue-400">
+            <span className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-blue-500/20 text-blue-400 hidden sm:inline-block">
               Seated
             </span>
           )}
-          <button onClick={() => onEndWorkout(false)} className="text-zinc-500 hover:text-zinc-300 transition-colors">
-            <X className="w-6 h-6" />
+          <button onClick={() => onEndWorkout(false)} className="text-zinc-400 hover:text-zinc-100 p-1">
+            <X className="w-5 h-5" />
           </button>
         </div>
       </div>
 
-      <div className="w-full h-1 bg-zinc-800 shrink-0">
-        <div className="h-full bg-indigo-500 transition-all duration-1000 ease-linear" style={{ width: `${progressPercent}%` }} />
-      </div>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col p-4 sm:p-6 overflow-hidden">
+        {/* Progress Bar */}
+        <div className="w-full h-1 bg-zinc-800 rounded-full mb-4 shrink-0 overflow-hidden">
+          <div className="h-full bg-indigo-500 transition-all duration-1000 ease-linear" style={{ width: `${progressPercent}%` }} />
+        </div>
 
-      <div className="flex-1 flex flex-col p-6 overflow-hidden">
-        <div className="flex items-center justify-between mb-4 shrink-0">
-          <div className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">
-            Drill {currentDrillIndex + 1} of {phase.drills.length}
-          </div>
-          <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+        {/* Focus Mode & Hand Assignment */}
+        <div className="flex justify-center items-center gap-2 mb-4 shrink-0 flex-wrap">
+          <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${
             currentDrill.focusMode === 'FULL_FOCUS' 
               ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' 
               : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
           }`}>
             {currentDrill.focusMode === 'FULL_FOCUS' ? 'Full Focus' : 'Media OK'}
           </div>
+
+          {(currentDrill as any).handAssignment && (
+            <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+              (currentDrill as any).handAssignment === 'LEFT_ONLY' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' :
+              (currentDrill as any).handAssignment === 'RIGHT_ONLY' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+              (currentDrill as any).handAssignment === 'SPLIT_HALFWAY' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+              'bg-zinc-800 text-zinc-300 border border-zinc-700'
+            }`}>
+              {(currentDrill as any).handAssignment === 'LEFT_ONLY' ? 'Left Hand' :
+               (currentDrill as any).handAssignment === 'RIGHT_ONLY' ? 'Right Hand' :
+               (currentDrill as any).handAssignment === 'SPLIT_HALFWAY' ? 'Switch at 50%' :
+               'Both Hands'}
+            </div>
+          )}
         </div>
 
-        <div className="flex flex-col items-center justify-center flex-1 min-h-0">
-          <div className="text-[5.5rem] font-black tracking-tighter leading-none tabular-nums text-white my-2">
+        {/* Timer */}
+        <div className="flex flex-col items-center justify-center flex-1 min-h-[200px] mb-4">
+          <div className="text-[5rem] sm:text-[6.5rem] font-black tracking-tighter leading-none tabular-nums text-white">
             {formatTime(timeLeft)}
           </div>
-          
-          <div className="flex items-center justify-center gap-3 mt-4 w-full">
-            <h2 className="text-2xl text-zinc-200 font-bold text-center truncate px-2">
-              {currentDrill.name}
-            </h2>
-            <button 
-              onClick={() => setShowInfoModal(true)}
-              className="text-zinc-500 hover:text-indigo-400 transition-colors shrink-0 p-1"
-            >
-              <Info className="w-6 h-6" />
-            </button>
+          <div className="text-xl sm:text-2xl text-zinc-200 mt-4 font-bold text-center px-2">
+            {currentDrill.name}
           </div>
           
           {!isPlaying && timeLeft === currentDrill.durationSeconds && (
@@ -355,68 +365,103 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({
           )}
 
           {exercises.length > 0 && (
-            <div className="mt-6 text-xs text-zinc-500">
-              Up Next: {exercises.length} Strength/Spine exercises
+            <div className="mt-4 text-xs text-zinc-400">
+              Up Next: {exercises.length} Strength & Spine exercises
             </div>
           )}
         </div>
+
+        {/* Info Button */}
+        <div className="flex justify-center mb-4 shrink-0">
+          <Button
+            variant="secondary"
+            className="flex items-center gap-2 bg-zinc-900 border-zinc-800 hover:bg-zinc-800 text-zinc-300"
+            onClick={() => setShowInfoModal(true)}
+          >
+            <Info className="w-4 h-4" />
+            <span className="text-xs">Form cues & posture context</span>
+          </Button>
+        </div>
+
+        {/* Next Drill */}
+        <div className="text-center text-zinc-500 text-xs sm:text-sm mb-2 font-medium h-5 shrink-0">
+          {nextDrill ? `Next: ${nextDrill.name} (${formatTime(nextDrill.durationSeconds)})` : exercises.length > 0 ? 'Next: Strength & Spine Stack' : 'Final Drill'}
+        </div>
       </div>
 
-      <div className="p-6 pb-8 shrink-0 border-t border-zinc-900 bg-zinc-950">
+      {/* Controls - Fixed at Bottom */}
+      <div className="p-4 pb-6 bg-gradient-to-t from-zinc-950 via-zinc-950 to-transparent shrink-0">
         <div className="flex items-center justify-center gap-6">
-          <Button 
-            variant="ghost" 
-            size="lg"
-            className="w-14 h-14 rounded-full bg-zinc-800 text-zinc-100 hover:bg-zinc-700 disabled:bg-zinc-900 disabled:text-zinc-600 border border-zinc-700"
-            onClick={skipDrillBackward}
-            disabled={currentDrillIndex === 0}
-          >
-            <SkipBack className="w-6 h-6" />
-          </Button>
+          <div className="flex flex-col items-center gap-1">
+            <button
+              className="w-14 h-14 rounded-full bg-zinc-800/80 border border-zinc-700 text-zinc-200 hover:bg-zinc-700 disabled:opacity-30 disabled:bg-zinc-900 flex items-center justify-center transition-colors"
+              onClick={skipDrillBackward}
+              disabled={currentDrillIndex === 0}
+            >
+              <SkipBack className="w-6 h-6" />
+            </button>
+            <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500">Prev</span>
+          </div>
 
-          <Button 
-            variant="primary" 
-            size="lg"
-            className="w-20 h-20 rounded-full text-zinc-950 shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:scale-105 transition-transform"
+          <button
+            className="w-20 h-20 rounded-full bg-zinc-100 text-zinc-900 shadow-[0_0_40px_rgba(255,255,255,0.1)] mb-4 flex items-center justify-center hover:bg-white transition-colors"
             onClick={() => {
               unlockAudio();
               setIsPlaying(!isPlaying);
             }}
           >
             {isPlaying ? (
-              <Pause className="w-8 h-8" fill="currentColor" />
+              <Pause className="w-8 h-8 text-zinc-900 fill-zinc-900" />
             ) : (
-              <Play className="w-8 h-8 ml-1" fill="currentColor" />
+              <Play className="w-8 h-8 ml-1 text-zinc-900 fill-zinc-900" />
             )}
-          </Button>
+          </button>
 
-          <Button 
-            variant="ghost" 
-            size="lg"
-            className="w-14 h-14 rounded-full bg-zinc-800 text-zinc-100 hover:bg-zinc-700 border border-zinc-700"
-            onClick={skipDrillForward}
-          >
-            <SkipForward className="w-6 h-6" />
-          </Button>
+          <div className="flex flex-col items-center gap-1">
+            <button
+              className="w-14 h-14 rounded-full bg-zinc-800/80 border border-zinc-700 text-zinc-200 hover:bg-zinc-700 disabled:opacity-30 disabled:bg-zinc-900 flex items-center justify-center transition-colors"
+              onClick={skipDrillForward}
+            >
+              <SkipForward className="w-6 h-6" />
+            </button>
+            <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500">Next</span>
+          </div>
         </div>
       </div>
 
       {showInfoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/90 backdrop-blur-sm p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-sm w-full shadow-2xl">
-            <div className="flex justify-between items-start mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/85 backdrop-blur-sm p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-sm w-full shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="flex justify-between items-start mb-3 shrink-0">
               <h3 className="text-xl font-bold text-zinc-100">{currentDrill.name}</h3>
-              <button onClick={() => setShowInfoModal(false)} className="text-zinc-500 hover:text-zinc-300">
+              <button onClick={() => setShowInfoModal(false)} className="text-zinc-500 hover:text-zinc-300 p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
-            <div className="space-y-6">
+
+            {/* Posture Banner with Switcher */}
+            <div className={`p-3.5 rounded-lg mb-4 shrink-0 ${currentMode === 'standing' ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-blue-500/10 border border-blue-500/20'}`}>
+              <div className="flex justify-between items-center mb-1.5">
+                <h4 className={`text-xs font-bold uppercase tracking-wider ${currentMode === 'standing' ? 'text-emerald-400' : 'text-blue-400'}`}>
+                  {(workoutsData.postureCues as any)[currentMode]?.title || `${currentMode} Mode`}
+                </h4>
+                <button
+                  onClick={() => setCurrentMode(currentMode === 'standing' ? 'seated' : 'standing')}
+                  className="text-[11px] underline text-indigo-400 hover:text-indigo-300"
+                >
+                  Switch to {currentMode === 'standing' ? 'Seated' : 'Standing'}
+                </button>
+              </div>
+              <p className="text-xs text-zinc-300 mb-1 leading-snug">{(workoutsData.postureCues as any)[currentMode]?.general}</p>
+              <p className="text-xs text-zinc-400 leading-snug">{(workoutsData.postureCues as any)[currentMode]?.ballContact}</p>
+            </div>
+
+            <div className="overflow-y-auto space-y-4 mb-4 text-sm text-zinc-300">
               <div>
                 <h4 className="text-xs uppercase tracking-widest text-indigo-400 font-bold mb-2">Drill Cues</h4>
-                <ul className="space-y-2 text-sm text-zinc-300">
+                <ul className="space-y-1.5">
                   {currentDrill.cues?.map((cue, i) => (
-                    <li key={i} className="flex gap-2">
+                    <li key={i} className="flex gap-2 text-xs text-zinc-200">
                       <span className="text-indigo-500 shrink-0">•</span>
                       <span>{cue}</span>
                     </li>
@@ -424,22 +469,15 @@ export const ActiveWorkout: React.FC<ActiveWorkoutProps> = ({
                 </ul>
               </div>
 
-              <div>
-                <h4 className="text-xs uppercase tracking-widest text-emerald-400 font-bold mb-2">Posture Context</h4>
-                <ul className="space-y-2 text-sm text-zinc-300">
-                  <li className="flex gap-2">
-                    <CheckCircle className="w-4 h-4 text-emerald-500/70 shrink-0 mt-0.5" />
-                    <span>{postureCues.general}</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <CheckCircle className="w-4 h-4 text-emerald-500/70 shrink-0 mt-0.5" />
-                    <span>{postureCues.ballContact}</span>
-                  </li>
-                </ul>
-              </div>
+              {currentMode === 'seated' && (currentDrill as any).seatedAdaptation && (
+                <div className="bg-blue-500/10 border border-blue-500/20 p-3 rounded-lg text-blue-300 text-xs">
+                  <strong>Seated Adaptation:</strong><br />
+                  {(currentDrill as any).seatedAdaptation}
+                </div>
+              )}
             </div>
 
-            <Button className="w-full mt-8" onClick={() => setShowInfoModal(false)}>
+            <Button className="w-full shrink-0" onClick={() => setShowInfoModal(false)}>
               Got it
             </Button>
           </div>

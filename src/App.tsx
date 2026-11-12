@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Dashboard } from './pages/Dashboard';
 import { ActiveWorkout } from './pages/ActiveWorkout';
 import { PostWorkoutAssessment } from './pages/PostWorkoutAssessment';
+import { useUserData } from './hooks/useUserData';
 
 type AppState = 'dashboard' | 'workout' | 'assessment';
 
@@ -20,6 +21,7 @@ function App() {
     exerciseIds: [],
     isFullDribbling: true
   });
+  const { logWorkout } = useUserData();
 
   const handleStartWorkout = (config: WorkoutSessionConfig) => {
     setSessionConfig(config);
@@ -30,6 +32,8 @@ function App() {
     if (completed) {
       setAppState('assessment');
     } else {
+      // User aborted early: still counts towards session count and streak attempt
+      logWorkout(false, 'Aborted Session');
       setAppState('dashboard');
     }
   };
