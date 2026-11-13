@@ -24,6 +24,10 @@ export function useUserData() {
     return 0; // Streak broken
   };
 
+  const isCompletedToday = Boolean(
+    userData.lastWorkoutDate && isSameTrainingDay(userData.lastWorkoutDate, new Date())
+  );
+
   const undoTodaysSession = () => {
     setUserData((prev) => {
       if (!prev.previousStateSnapshot) return prev;
@@ -38,29 +42,33 @@ export function useUserData() {
     });
   };
 
-  const logWorkout = (isAssessmentSuccessful: boolean) => {
+  const calculateNextStreak = (prev: UserData, now: Date): number => {
+    const lastDate = prev.lastWorkoutDate ? new Date(prev.lastWorkoutDate) : null;
+    let newStreak = prev.currentStreak;
+    if (lastDate) {
+      if (!isSameTrainingDay(lastDate, now)) {
+        if (isConsecutiveTrainingDay(lastDate, now)) {
+          newStreak += 1;
+        } else {
+          newStreak = 1;
+        }
+      }
+      // If same training day, streak stays the same
+    } else {
+      newStreak = 1;
+    }
+
+    const displayed = getDisplayedStreak(prev);
+    if (newStreak === prev.currentStreak && displayed === 0 && prev.currentStreak > 0) {
+      newStreak = 1;
+    }
+    return newStreak;
+  };
+
+  const logWorkout = (isAssessmentSuccessful: boolean, activityLabel = 'Full Home Routine') => {
     setUserData((prev) => {
       const now = new Date();
-      const lastDate = prev.lastWorkoutDate ? new Date(prev.lastWorkoutDate) : null;
-      
-      let newStreak = prev.currentStreak;
-      if (lastDate) {
-        if (!isSameTrainingDay(lastDate, now)) {
-          if (isConsecutiveTrainingDay(lastDate, now)) {
-            newStreak += 1;
-          } else {
-            newStreak = 1;
-          }
-        }
-        // If same training day, streak stays the same
-      } else {
-        newStreak = 1;
-      }
-
-      const displayed = getDisplayedStreak(prev);
-      if (newStreak === prev.currentStreak && displayed === 0 && prev.currentStreak > 0) {
-         newStreak = 1;
-      }
+      const newStreak = calculateNextStreak(prev, now);
 
       const newAssessmentsCount = isAssessmentSuccessful 
         ? prev.successfulAssessments + 1 
@@ -77,7 +85,8 @@ export function useUserData() {
         completedSessions: prev.completedSessions,
         currentStreak: prev.currentStreak,
         highestStreak: prev.highestStreak,
-        lastWorkoutDate: prev.lastWorkoutDate
+        lastWorkoutDate: prev.lastWorkoutDate,
+        lastActivityLabel: prev.lastActivityLabel
       };
 
       return {
@@ -86,6 +95,7 @@ export function useUserData() {
         currentStreak: newStreak,
         highestStreak: Math.max(prev.highestStreak || 0, newStreak),
         lastWorkoutDate: now.toISOString(),
+        lastActivityLabel: activityLabel,
         successfulAssessments: newAssessmentsCount,
         unlockedPhases: newUnlockedPhases,
         previousStateSnapshot: snapshot
@@ -93,5 +103,40 @@ export function useUserData() {
     });
   };
 
-  return { userData, setUserData, logWorkout, getDisplayedStreak, undoTodaysSession };
+  const logExternalActivity = (activityLabel: string) => {
+    setUserData((prev) => {
+      const now = new Date();
+      const newStreak = calculateNextStreak(prev, now);
+
+      const snapshot: Omit<UserData, 'previousStateSnapshot'> = {
+        successfulAssessments: prev.successfulAssessments,
+        unlockedPhases: prev.unlockedPhases,
+        completedSessions: prev.completedSessions,
+        currentStreak: prev.currentStreak,
+        highestStreak: prev.highestStreak,
+        lastWorkoutDate: prev.lastWorkoutDate,
+        lastActivityLabel: prev.lastActivityLabel
+      };
+
+      return {
+        ...prev,
+        completedSessions: prev.completedSessions + 1,
+        currentStreak: newStreak,
+        highestStreak: Math.max(prev.highestStreak || 0, newStreak),
+        lastWorkoutDate: now.toISOString(),
+        lastActivityLabel: activityLabel,
+        previousStateSnapshot: snapshot
+      };
+    });
+  };
+
+  return {
+    userData,
+    setUserData,
+    isCompletedToday,
+    logWorkout,
+    logExternalActivity,
+    getDisplayedStreak,
+    undoTodaysSession
+  };
 }

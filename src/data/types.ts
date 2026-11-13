@@ -5,6 +5,7 @@ export interface UserData {
   currentStreak: number;         // Current daily streak
   highestStreak: number;         // Max daily streak achieved
   lastWorkoutDate: string | null;// ISO string
+  lastActivityLabel?: string;    // Tracks what secured today's streak
   previousStateSnapshot: Omit<UserData, 'previousStateSnapshot'> | null; // For undo
 }
 
@@ -15,5 +16,41 @@ export const INITIAL_USER_DATA: UserData = {
   currentStreak: 0,
   highestStreak: 0,
   lastWorkoutDate: null,
+  lastActivityLabel: '',
   previousStateSnapshot: null
 };
+
+export type DribblingModeId = 'FULL_DRIBBLING_DRILL' | 'CHILL_DRIBBLING_DRILL' | 'NONE';
+
+export interface StrengthExercise {
+  id: string;
+  name: string;
+  category: string;
+  sets: number;
+  reps: string;
+  restSeconds: number;
+  cues: string[];
+  gifUrl?: string;
+}
+
+export interface DayPlanConfig {
+  dribblingMode: DribblingModeId;
+  exercises: string[];
+}
+
+export interface DaySchedule {
+  dayName: string;
+  tag: string;
+  hasPopup: boolean;
+  popupQuestion?: string;
+  yesButtonText?: string;
+  noButtonText?: string;
+  onYes?: {
+    awardStreakImmediately: boolean;
+    activityLabel: string;
+    message: string;
+    optionalDribblingMode?: DribblingModeId;
+  };
+  onNo?: DayPlanConfig;
+  defaultPlan?: DayPlanConfig;
+}

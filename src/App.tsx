@@ -3,18 +3,30 @@ import { Dashboard } from './pages/Dashboard';
 import { ActiveWorkout } from './pages/ActiveWorkout';
 import { PostWorkoutAssessment } from './pages/PostWorkoutAssessment';
 import { useUserData } from './hooks/useUserData';
+import { useWakeLock } from './hooks/useWakeLock';
 
 type AppState = 'dashboard' | 'workout' | 'assessment';
 
+export interface WorkoutSessionConfig {
+  phaseId: string;
+  exerciseIds: string[];
+  isFullDribbling: boolean;
+}
+
 function App() {
+  // Keep screen active whenever the app is open, even during untimed exercises
+  useWakeLock(true);
+
   const [appState, setAppState] = useState<AppState>('dashboard');
-  const [activePhase, setActivePhase] = useState<string>('');
-  const [activeMode, setActiveMode] = useState<'standing' | 'seated'>('standing');
+  const [sessionConfig, setSessionConfig] = useState<WorkoutSessionConfig>({
+    phaseId: 'phase_1',
+    exerciseIds: [],
+    isFullDribbling: true
+  });
   const { logWorkout } = useUserData();
 
-  const handleStartWorkout = (phaseId: string, mode: 'standing' | 'seated') => {
-    setActivePhase(phaseId);
-    setActiveMode(mode);
+  const handleStartWorkout = (config: WorkoutSessionConfig) => {
+    setSessionConfig(config);
     setAppState('workout');
   };
 
@@ -23,7 +35,7 @@ function App() {
       setAppState('assessment');
     } else {
       // User aborted the workout early. Log it as an unsuccessful assessment so the session still counts towards streak and total sessions.
-      logWorkout(false);
+      logWorkout(false, 'Aborted Session');
       setAppState('dashboard');
     }
   };
@@ -40,14 +52,18 @@ function App() {
       
       {appState === 'workout' && (
         <ActiveWorkout 
-          phaseId={activePhase} 
-          mode={activeMode} 
+          phaseId={sessionConfig.phaseId} 
+          exerciseIds={sessionConfig.exerciseIds}
           onEndWorkout={handleEndWorkout} 
         />
       )}
       
       {appState === 'assessment' && (
-        <PostWorkoutAssessment onComplete={handleAssessmentComplete} />
+        <PostWorkoutAssessment 
+          isFullDribbling={sessionConfig.isFullDribbling}
+          exerciseIds={sessionConfig.exerciseIds}
+          onComplete={handleAssessmentComplete} 
+        />
       )}
     </>
   );
