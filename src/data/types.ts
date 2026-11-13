@@ -30,11 +30,11 @@ export interface StrengthExercise {
   reps: string;
   restSeconds: number;
   cues: string[];
+  gifUrl?: string;
 }
 
 export interface DayPlanConfig {
   dribblingMode: DribblingModeId;
-  defaultPosture: 'standing' | 'seated';
   exercises: string[];
 }
 

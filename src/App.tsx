@@ -3,21 +3,23 @@ import { Dashboard } from './pages/Dashboard';
 import { ActiveWorkout } from './pages/ActiveWorkout';
 import { PostWorkoutAssessment } from './pages/PostWorkoutAssessment';
 import { useUserData } from './hooks/useUserData';
+import { useWakeLock } from './hooks/useWakeLock';
 
 type AppState = 'dashboard' | 'workout' | 'assessment';
 
 export interface WorkoutSessionConfig {
   phaseId: string;
-  mode: 'standing' | 'seated';
   exerciseIds: string[];
   isFullDribbling: boolean;
 }
 
 function App() {
+  // Keep screen active whenever the app is open, even during untimed exercises
+  useWakeLock(true);
+
   const [appState, setAppState] = useState<AppState>('dashboard');
   const [sessionConfig, setSessionConfig] = useState<WorkoutSessionConfig>({
     phaseId: 'phase_1',
-    mode: 'standing',
     exerciseIds: [],
     isFullDribbling: true
   });
@@ -32,7 +34,7 @@ function App() {
     if (completed) {
       setAppState('assessment');
     } else {
-      // User aborted early: still counts towards session count and streak attempt
+      // User aborted the workout early. Log it as an unsuccessful assessment so the session still counts towards streak and total sessions.
       logWorkout(false, 'Aborted Session');
       setAppState('dashboard');
     }
@@ -51,7 +53,6 @@ function App() {
       {appState === 'workout' && (
         <ActiveWorkout 
           phaseId={sessionConfig.phaseId} 
-          mode={sessionConfig.mode} 
           exerciseIds={sessionConfig.exerciseIds}
           onEndWorkout={handleEndWorkout} 
         />
@@ -60,6 +61,7 @@ function App() {
       {appState === 'assessment' && (
         <PostWorkoutAssessment 
           isFullDribbling={sessionConfig.isFullDribbling}
+          exerciseIds={sessionConfig.exerciseIds}
           onComplete={handleAssessmentComplete} 
         />
       )}

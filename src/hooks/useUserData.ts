@@ -13,7 +13,7 @@ export function useUserData() {
     if (!data.lastWorkoutDate) return 0;
     const now = new Date();
 
-    // If last workout was on the same training day or consecutive training day, streak is active
+    // If last workout was on the same training day or consecutive training day (yesterday's training day), streak is active
     if (
       isSameTrainingDay(data.lastWorkoutDate, now) ||
       isConsecutiveTrainingDay(data.lastWorkoutDate, now)
@@ -24,10 +24,9 @@ export function useUserData() {
     return 0; // Streak broken
   };
 
-  const isCompletedToday = (() => {
-    if (!userData.lastWorkoutDate) return false;
-    return isSameTrainingDay(userData.lastWorkoutDate, new Date());
-  })();
+  const isCompletedToday = Boolean(
+    userData.lastWorkoutDate && isSameTrainingDay(userData.lastWorkoutDate, new Date())
+  );
 
   const undoTodaysSession = () => {
     setUserData((prev) => {
@@ -43,21 +42,33 @@ export function useUserData() {
     });
   };
 
-  const calculateNextStreak = (lastWorkoutDate: string | null, currentStreak: number, now: Date): number => {
-    if (!lastWorkoutDate) return 1;
-    if (isSameTrainingDay(lastWorkoutDate, now)) {
-      return Math.max(1, currentStreak);
+  const calculateNextStreak = (prev: UserData, now: Date): number => {
+    const lastDate = prev.lastWorkoutDate ? new Date(prev.lastWorkoutDate) : null;
+    let newStreak = prev.currentStreak;
+    if (lastDate) {
+      if (!isSameTrainingDay(lastDate, now)) {
+        if (isConsecutiveTrainingDay(lastDate, now)) {
+          newStreak += 1;
+        } else {
+          newStreak = 1;
+        }
+      }
+      // If same training day, streak stays the same
+    } else {
+      newStreak = 1;
     }
-    if (isConsecutiveTrainingDay(lastWorkoutDate, now)) {
-      return currentStreak + 1;
+
+    const displayed = getDisplayedStreak(prev);
+    if (newStreak === prev.currentStreak && displayed === 0 && prev.currentStreak > 0) {
+      newStreak = 1;
     }
-    return 1; // Streak broken
+    return newStreak;
   };
 
   const logWorkout = (isAssessmentSuccessful: boolean, activityLabel = 'Full Home Routine') => {
     setUserData((prev) => {
       const now = new Date();
-      const newStreak = calculateNextStreak(prev.lastWorkoutDate, prev.currentStreak, now);
+      const newStreak = calculateNextStreak(prev, now);
 
       const newAssessmentsCount = isAssessmentSuccessful 
         ? prev.successfulAssessments + 1 
@@ -73,7 +84,7 @@ export function useUserData() {
         unlockedPhases: prev.unlockedPhases,
         completedSessions: prev.completedSessions,
         currentStreak: prev.currentStreak,
-        highestStreak: prev.highestStreak ?? 0,
+        highestStreak: prev.highestStreak,
         lastWorkoutDate: prev.lastWorkoutDate,
         lastActivityLabel: prev.lastActivityLabel
       };
@@ -82,7 +93,7 @@ export function useUserData() {
         ...prev,
         completedSessions: prev.completedSessions + 1,
         currentStreak: newStreak,
-        highestStreak: Math.max(prev.highestStreak ?? 0, newStreak),
+        highestStreak: Math.max(prev.highestStreak || 0, newStreak),
         lastWorkoutDate: now.toISOString(),
         lastActivityLabel: activityLabel,
         successfulAssessments: newAssessmentsCount,
@@ -95,14 +106,14 @@ export function useUserData() {
   const logExternalActivity = (activityLabel: string) => {
     setUserData((prev) => {
       const now = new Date();
-      const newStreak = calculateNextStreak(prev.lastWorkoutDate, prev.currentStreak, now);
+      const newStreak = calculateNextStreak(prev, now);
 
       const snapshot: Omit<UserData, 'previousStateSnapshot'> = {
         successfulAssessments: prev.successfulAssessments,
         unlockedPhases: prev.unlockedPhases,
         completedSessions: prev.completedSessions,
         currentStreak: prev.currentStreak,
-        highestStreak: prev.highestStreak ?? 0,
+        highestStreak: prev.highestStreak,
         lastWorkoutDate: prev.lastWorkoutDate,
         lastActivityLabel: prev.lastActivityLabel
       };
@@ -111,7 +122,7 @@ export function useUserData() {
         ...prev,
         completedSessions: prev.completedSessions + 1,
         currentStreak: newStreak,
-        highestStreak: Math.max(prev.highestStreak ?? 0, newStreak),
+        highestStreak: Math.max(prev.highestStreak || 0, newStreak),
         lastWorkoutDate: now.toISOString(),
         lastActivityLabel: activityLabel,
         previousStateSnapshot: snapshot
@@ -123,9 +134,9 @@ export function useUserData() {
     userData,
     setUserData,
     isCompletedToday,
-    getDisplayedStreak,
-    undoTodaysSession,
     logWorkout,
-    logExternalActivity
+    logExternalActivity,
+    getDisplayedStreak,
+    undoTodaysSession
   };
 }

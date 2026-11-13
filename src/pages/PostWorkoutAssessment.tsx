@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useUserData } from '../hooks/useUserData';
+import workoutsData from '../data/workouts.json';
+import type { StrengthExercise } from '../data/types';
+import { ExerciseAnimation } from '../components/ExerciseAnimation';
 import { Button } from '../components/ui/Button';
 import { CheckCircle2, Circle } from 'lucide-react';
 
 interface PostWorkoutAssessmentProps {
   isFullDribbling: boolean;
+  exerciseIds: string[];
   onComplete: () => void;
 }
 
@@ -28,11 +32,19 @@ const CheckboxRow = ({ checked, onChange, text }: { checked: boolean, onChange: 
   </div>
 );
 
-export const PostWorkoutAssessment: React.FC<PostWorkoutAssessmentProps> = ({ isFullDribbling, onComplete }) => {
+export const PostWorkoutAssessment: React.FC<PostWorkoutAssessmentProps> = ({
+  isFullDribbling,
+  exerciseIds,
+  onComplete
+}) => {
   const { userData, logWorkout } = useUserData();
   const [criteria1, setCriteria1] = useState(false);
   const [criteria2, setCriteria2] = useState(false);
   const [criteria3, setCriteria3] = useState(false);
+
+  const completedExercises: StrengthExercise[] = exerciseIds
+    .map(id => (workoutsData.exerciseLibrary as Record<string, StrengthExercise>)[id])
+    .filter(Boolean);
 
   const handleSubmit = () => {
     const isSuccessful = isFullDribbling && criteria1 && criteria2 && criteria3;
@@ -49,9 +61,9 @@ export const PostWorkoutAssessment: React.FC<PostWorkoutAssessmentProps> = ({ is
 
   return (
     <div className="min-h-screen bg-transparent text-zinc-100 p-6 flex flex-col max-w-md mx-auto">
-      <div className="flex-1 mt-8">
-        <div className="text-center mb-8">
-          <div className="inline-block bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">
+      <div className="flex-1 mt-6">
+        <div className="text-center mb-6">
+          <div className="inline-block bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-3">
             Daily Stack Complete 🔥
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight mb-2">
@@ -59,13 +71,13 @@ export const PostWorkoutAssessment: React.FC<PostWorkoutAssessmentProps> = ({ is
           </h1>
           <p className="text-zinc-400 text-sm">
             {isFullDribbling
-              ? 'Check the boxes if you met the criteria during your Full Dribbling Drill Mode.'
-              : 'Your chill flow and spine/wrist prehab are complete. Claim your daily streak below!'}
+              ? 'Check the boxes if you met the criteria during this session. You need 5 certified sessions to unlock Phase 2.'
+              : 'Your chill flow and conditioning stack are complete. Claim your daily streak below!'}
           </p>
         </div>
 
         {isFullDribbling && (
-          <div className="space-y-4 mb-8">
+          <div className="space-y-3 mb-6">
             <CheckboxRow 
               checked={criteria1} 
               onChange={() => setCriteria1(!criteria1)}
@@ -83,6 +95,25 @@ export const PostWorkoutAssessment: React.FC<PostWorkoutAssessmentProps> = ({ is
             />
           </div>
         )}
+
+        {completedExercises.length > 0 && (
+          <div className="mb-6">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-3">
+              Completed Conditioning Exercises
+            </h3>
+            <div className="space-y-3">
+              {completedExercises.map((ex) => (
+                <div key={ex.id} className="p-3 rounded-xl bg-zinc-900/70 border border-zinc-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-bold text-emerald-300">{ex.name}</span>
+                    <span className="text-xs font-mono text-zinc-400">{ex.sets} × {ex.reps}</span>
+                  </div>
+                  <ExerciseAnimation exerciseId={ex.id} gifUrl={ex.gifUrl} isComplete={true} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="sticky bottom-0 bg-gradient-to-t from-zinc-950 via-zinc-950 to-transparent pt-4 pb-8">
@@ -91,7 +122,7 @@ export const PostWorkoutAssessment: React.FC<PostWorkoutAssessmentProps> = ({ is
           className="w-full"
           onClick={handleSubmit}
         >
-          Save Streak & Return
+          Save Assessment & Return
         </Button>
       </div>
     </div>
